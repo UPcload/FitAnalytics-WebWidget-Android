@@ -1,0 +1,25 @@
+buildscript {
+  dependencies {
+    classpath dep.androidPlugin
+  }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  compileOptions {
+    sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+    targetCompatibility rootProject.ext.targetCompatibilityVersion
+  }
+
+  dexOptions {
+    preDexLibraries = !rootProject.ext.isCi
+  }
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+  }
+}

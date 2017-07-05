@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.fitanalytics.widgetembed.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editProductId"
+                android:hint="@string/edit_product_id"
+                android:inputType="text"
+                android:textSize="6pt"
+                android:layout_height="wrap_content"
+                android:layout_width="20mm">
+            </EditText>
+
+            <Button
+                android:id="@+id/submitProductId"
+                android:text="@string/submit_product_id"
+                android:onClick="onSubmitProductIdClick"
+                android:layout_height="wrap_content"
+                android:layout_width="10mm">
+            </Button>
+
+            <TextView
+                android:id="@+id/resultText"
+                android:layout_width="20mm"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="6pt">
+            </TextView>
+        </LinearLayout>
+
+        <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/widget_webview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+    </LinearLayout>
+</RelativeLayout>

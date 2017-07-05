@@ -1,0 +1,12 @@
+subprojects {
+  buildscript {
+    repositories {
+      jcenter()
+    }
+    dependencies {
+      classpath 'com.android.tools.build:gradle:2.3.3'
+    }
+  }
+}
+
+apply from: rootProject.file('dependencies.gradle')

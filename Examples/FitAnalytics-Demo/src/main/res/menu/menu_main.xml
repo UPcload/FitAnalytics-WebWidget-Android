@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.fitanalytics.WidgetDemo.MainActivity">
+    <item
+        android:id="@+id/action_open"
+        android:icon="@drawable/open"
+        android:title="@string/action_open"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_recommend"
+        android:orderInCategory="100"
+        android:title="@string/action_recommend"
+        app:showAsAction="never" />
+    <!--
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/edit"
+        android:title="@string/action_edit"
+        app:showAsAction="ifRoom"/>
+    -->
+    <item
+        android:id="@+id/action_close"
+        android:icon="@drawable/close"
+        android:title="@string/action_close"
+        app:showAsAction="ifRoom"/>
+    <!--
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    -->
+</menu>

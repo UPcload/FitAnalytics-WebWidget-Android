@@ -1,0 +1,10 @@
+# generic artifacts
+.DS_Store
+
+# gradle & Android Studio artifacts
+.gradle
+*.iml
+.idea/
+/local.properties
+/build
+/captures

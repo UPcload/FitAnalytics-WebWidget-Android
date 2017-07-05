@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FitAnalytics Demo</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_open">Open</string>
+    <string name="action_close">Close</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_recommend">Recommend</string>
+    <string name="edit_product_id">Enter Product ID ...</string>
+    <string name="submit_product_id">OK</string>
+</resources>
