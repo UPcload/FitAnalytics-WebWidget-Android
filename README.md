@@ -187,7 +187,7 @@ This method will be called when widget instance inside the WebView has been succ
 &nbsp;
 
 ```java
-public void onWebWidgetLoadError(FITAWebWidget widget);
+public void onWebWidgetLoadError(FITAWebWidget widget, String description);
 ```
 
 This method will be called when widget inside the WebView has failed to load or initialize for some reason.

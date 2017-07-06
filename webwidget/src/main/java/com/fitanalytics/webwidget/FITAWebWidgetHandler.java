@@ -19,6 +19,7 @@ public interface FITAWebWidgetHandler {
     /**
      * This method will be called when widget inside the WebView has failed to load or initialize for some reason.
      * @param widget The widget controller instance
+     * @param description Description of error, e.g. "net::ERR_TUNNEL_CONNECTION_FAILED"
      */
     public void onWebWidgetLoadError(FITAWebWidget widget, String description);
 
