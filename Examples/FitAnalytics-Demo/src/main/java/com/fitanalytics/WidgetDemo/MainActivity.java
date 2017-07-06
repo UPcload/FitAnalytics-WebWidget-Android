@@ -148,8 +148,8 @@ implements FITAWebWidgetHandler {
         setMessage("Initialized");
     }
 
-    public void onWebWidgetLoadError(FITAWebWidget widget) {
-        Log.d("fitaWidget", "LOAD ERROR");
+    public void onWebWidgetLoadError(FITAWebWidget widget, String details) {
+        Log.d("fitaWidget", "LOAD ERROR " + details);
         setMessage("Load error");
     }
 

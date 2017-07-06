@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.io.UnsupportedEncodingException;
 
 public class FITAWebWidget {
-    protected String mWidgetContainerURL = "https://widget.fitanalytics.com/widget/app-embed.html";
+    public static String widgetContainerURL = "https://widget.fitanalytics.com/widget/app-embed.html";
 
     protected WebView mView;
     protected FITAWebViewClient mClient;
@@ -43,7 +43,7 @@ public class FITAWebWidget {
     public boolean load() {
         if (!isLoading) {
             isLoading = true;
-            mView.loadUrl(mWidgetContainerURL);
+            mView.loadUrl(FITAWebWidget.widgetContainerURL);
             return true;
         } else {
             return false;
@@ -136,7 +136,7 @@ public class FITAWebWidget {
         WebView.setWebContentsDebuggingEnabled(true);
 
         // create and register the custom WebViewClient
-        final FITAWebViewClient client = new FITAWebViewClient();
+        final FITAWebViewClient client = new FITAWebViewClient(this);
         webView.setWebViewClient(client);
 
         // create the message interface
@@ -309,5 +309,9 @@ public class FITAWebWidget {
         }
 
         return encodedText;
+    }
+
+    public void onContainerLoadError(String description) {
+        mHandler.onWebWidgetLoadError(this, description);
     }
 }

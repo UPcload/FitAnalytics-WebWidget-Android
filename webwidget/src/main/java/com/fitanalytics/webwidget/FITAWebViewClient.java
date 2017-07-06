@@ -6,6 +6,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class FITAWebViewClient extends WebViewClient {
+    protected FITAWebWidget mWidget;
+
+    public FITAWebViewClient (FITAWebWidget widget) {
+        mWidget = widget;
+    }
+
     // only allow requests to *.fitanalytics.com domains
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -22,5 +28,12 @@ public class FITAWebViewClient extends WebViewClient {
         }
 
         return true;
+    }
+
+    @Override
+    public void onReceivedError (WebView view, int errorCode, String description, String failingUrl) {
+        if (failingUrl.equals(FITAWebWidget.widgetContainerURL)) {
+            mWidget.onContainerLoadError(description);
+        }
     }
 }
