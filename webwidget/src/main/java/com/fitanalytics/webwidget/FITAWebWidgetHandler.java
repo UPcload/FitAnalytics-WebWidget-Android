@@ -11,8 +11,7 @@ public interface FITAWebWidgetHandler {
     public void onWebWidgetReady(FITAWebWidget widget);
 
     /**
-     * This method will be called when widget container inside the WebView has successfully loaded
-     * and is ready to accept commands.
+     * This method will be called when widget instance inside the WebView has been successfully created.
      * @param widget The widget controller instance
      */
     public void onWebWidgetInit(FITAWebWidget widget);

@@ -6,7 +6,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class FITAWebViewClient extends WebViewClient {
-
     // only allow requests to *.fitanalytics.com domains
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {

@@ -36,6 +36,10 @@ public class FITAWebWidget {
     // Public API methods
     //
 
+    /**
+     * Begin loading the HTML widget container page.
+     * @return `false` if the container is already being loaded
+     */
     public boolean load() {
         if (!isLoading) {
             isLoading = true;
@@ -50,14 +54,12 @@ public class FITAWebWidget {
      * Create the widget with a product serial and/or widget options
      * Must be called after the `FITAWebWidgetHandler.onWebWidgetReady` callback
      */
-    public boolean create(String productSerial, JSONObject options) {
+    public void create(String productSerial, JSONObject options) {
         try {
             createAndSendAction("init", createWidgetArguments(productSerial, options));
         } catch (JSONException e) {
             Log.e("fitaWidget", "Error sending message");
-            return false;
         }
-        return true;
     }
 
     /**
@@ -102,7 +104,9 @@ public class FITAWebWidget {
 
     /**
      * Request a recommendation. The recommended size will be returned as an argument to
-     * the -[FITAWebWidgetHandler onWebWidgetDidRecommend] callback
+     * the `FITAWebWidgetHandler.onWebWidgetRecommend` callback
+     * @param productSerial (optional) The new product serial
+     * @param options (optional) Additional widget options
      */
 
     public void recommend(String productSerial, JSONObject options) {
