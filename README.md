@@ -167,3 +167,65 @@ widget.reconfigure(null, (new JSONObject())
   )
 );
 ```
+
+## Callbacks
+
+```java
+public void onWebWidgetReady(FITAWebWidget widget);
+```
+
+This method will be called when widget container inside the WebView has successfully loaded and is ready to accept commands.
+
+&nbsp;
+
+```java
+public void onWebWidgetInit(FITAWebWidget widget);
+```
+
+This method will be called when widget instance inside the WebView has been successfully created.
+
+&nbsp;
+
+```java
+public void onWebWidgetLoadError(FITAWebWidget widget);
+```
+
+This method will be called when widget inside the WebView has failed to load or initialize for some reason.
+
+&nbsp;
+
+```java
+public void onWebWidgetProductLoad(FITAWebWidget widget, String productId, JSONObject details);
+```
+
+This method will be called when the widget has successfully loaded the product info. A successful product load means that the product is supported by FitAnalytics and the widget should be able to provide a size recommendation for it.
+
+&nbsp;
+
+```java
+public void onWebWidgetProductLoadError(FITAWebWidget widget, String productId, JSONObject details);
+```
+
+This method will be called when the widget failed to load the product info or the product is not supported.
+
+&nbsp;
+
+```java
+public void onWebWidgetOpen(FITAWebWidget widget, String productId);
+```
+
+This method will be called when the widget has successfully opened after the `open` method call.
+
+## Configurable widget options
+
+`sizes` ..  an array of in-stock sizes for the current product
+
+`manufacturedSizes` .. a dictionary of all manfactured sizes for the current product, including their in/out-of-stock status
+
+`userId` .. the shop's user ID, in case the user is logged in
+
+`shopCountry` .. the ISO code of the shop's country (e.g. US, DE, FR, GB, etc.)
+
+`language` .. the language mutation of the shop (e.g. en, de, fr, es, it, etc.)
+
+For the complete list of available widget options and their description, please see http://developers.fitanalytics.com/documentation#list-callbacks-parameters
