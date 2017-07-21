@@ -105,13 +105,9 @@ implements FITAWebWidgetHandler {
 
     //////////////////////////////////
 
-    private String getUserSid() {
+    private String getUserId() {
         // NOOP
         return null;
-    }
-
-    private void setUserSid(String sid) {
-        // NOOP
     }
 
     private void onRecommendedSize(String size) {
@@ -132,10 +128,9 @@ implements FITAWebWidgetHandler {
                 .put("language", "en")
                 .put("shopCountry", "US");
 
-            // if we're storing the session locally (e.g. in user's profile)
-            // we can supply it to the widget directly, instead of relying on cookies
+            // (optional) add the userId for logged-in users
             if (getUserSid() != null) {
-                config.put("sid", getUserSid());
+                config.put("userId", getUserId());
             }
 
             widget.create(null, config);
