@@ -51,8 +51,24 @@ public class FITAWebWidget {
     }
 
     /**
-     * Create the widget with a product serial and/or widget options
-     * Must be called after the `FITAWebWidgetHandler.onWebWidgetReady` callback
+     * Create the widget with a product serial and widget options. Must be called after the `FITAWebWidgetHandler.onWebWidgetReady` callback.
+     * @param productSerial (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded.
+     * @param options       Initial set of options for the widget as WidgetOptions object.
+     */
+    public void create(String productSerial, WidgetOptions options) {
+        create(productSerial, options.toJSON());
+    }
+    /**
+     * Create the widget with a product serial. For details see above.
+     * @param productSerial (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded.
+     */
+    public void create(String productSerial) {
+        create(productSerial, (JSONObject) null);
+    }
+    /**
+     * Create the widget with a product serial and widget options as JSONObject. For details see above.
+     * @param productSerial (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded.
+     * @param options       Initial set of options for the widget as JSONObject object.
      */
     public void create(String productSerial, JSONObject options) {
         try {
@@ -66,8 +82,23 @@ public class FITAWebWidget {
      * Show the actual widget. When the widget finishes opening, it will call the
      * `FITAWebWidgetHandler.onWebWidgetOpen` callback.
      * Allows passing new product serial and/or widget options object.
-     * @param productSerial (optional) The new product serial
-     * @param options (optional) Additional widget options 
+     * @param productSerial (nullable) The new product serial
+     * @param options       Additional widget options as WidgetOptions
+     */
+    public void open(String productSerial, WidgetOptions options) {
+        open(productSerial, options.toJSON());
+    }
+    /**
+     * Open the widget with a new product serial. For details see above.
+     * @param productSerial (nullable) the new product serial
+     */
+    public void open(String productSerial) {
+        open(productSerial, (JSONObject) null);
+    }
+    /**
+     * Open the widget with a new product serial and/or widget object (as JSONObejct). For details see above.
+     * @param productSerial (nullable) the new product serial
+     * @param options       Additional widget options as JSONObject
      */
     public void open(String productSerial, JSONObject options) {
         try {
@@ -78,9 +109,24 @@ public class FITAWebWidget {
     }
 
     /**
-     * Reconfigure the widget with a new product serial and/or widget options object.
-     * @param productSerial (optional) The new product serial
-     * @param options (optional) Widget options 
+     * Reconfigure the widget with the new product serial and/or widget options object. The new product serial triggers a loading of new product.
+     * @param productSerial (nullable) the new product serial
+     * @param options       widget options as WidgetOptions
+     */
+    public void reconfigure(String productSerial, WidgetOptions options) {
+        reconfigure(productSerial, options.toJSON());
+    }
+    /**
+     * Reconfigure the widget with a new product serial.
+     * @param productSerial (nullable) the new product serial
+     */
+    public void reconfigure(String productSerial) {
+        reconfigure(productSerial, (JSONObject) null);
+    }
+    /**
+     * Reconfigure the widget with the new product serial and/or widget options object (as JSONObject).
+     * @param productSerial (nullable) the new product serial
+     * @param options       widget options as JSONObject
      */
     public void reconfigure(String productSerial, JSONObject options) {
         try {
@@ -103,12 +149,26 @@ public class FITAWebWidget {
     }
 
     /**
-     * Request a recommendation. The recommended size will be returned as an argument to
-     * the `FITAWebWidgetHandler.onWebWidgetRecommend` callback
-     * @param productSerial (optional) The new product serial
-     * @param options (optional) Additional widget options
+     * Request a recommendation with productSerial and widget options. The recommended size will be returned as an argument to the `FITAWebWidgetHandler.onWebWidgetRecommend` callback.
+     * @param productSerial (nullable) The new product serial
+     * @param options       Additional widget options
      */
-
+    public void recommend(String productSerial, WidgetOptions options) {
+        recommend(productSerial, options.toJSON());
+    }
+    /**
+     * Request a recommendation with productSerial. 
+     * @param productSerial (nullable) The new product serial
+     * @param options       Additional widget options
+     */
+    public void recommend(String productSerial) {
+        reconfigure(productSerial, (JSONObject) null);
+    }
+    /**
+     * Request a recommendation with productSerial and widget options (as JSONObject).
+     * @param productSerial (nullable) The new product serial
+     * @param options       Additional widget options as JSONObject
+     */
     public void recommend(String productSerial, JSONObject options) {
         try {
             createAndSendAction("getRecommendation", createWidgetArguments(productSerial, options));

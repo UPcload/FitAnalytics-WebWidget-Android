@@ -18,8 +18,13 @@ import android.webkit.WebView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import com.fitanalytics.webwidget.FITAWebWidgetHandler;
 import com.fitanalytics.webwidget.FITAWebWidget;
+import com.fitanalytics.webwidget.WidgetOptions;
+import com.fitanalytics.webwidget.ManufacturedSize;
 
 import android.util.Log;
 
@@ -75,8 +80,7 @@ implements FITAWebWidgetHandler {
         int id = item.getItemId();
 
         if (id == R.id.action_open) {
-            JSONObject config = new JSONObject();
-            mWidget.open(currentProductId, config);
+            mWidget.open(currentProductId);
 
             setMessage("Opening ...");
         }
@@ -84,8 +88,7 @@ implements FITAWebWidgetHandler {
             mWidget.close();
         }
         else if (id == R.id.action_recommend) {
-            JSONObject config = new JSONObject();
-            mWidget.recommend(currentProductId, config);
+            mWidget.recommend(currentProductId);
 
             setMessage("Recommending...");
         }
@@ -98,8 +101,7 @@ implements FITAWebWidgetHandler {
         Log.d("fitaWidget", "current Product Id: " + productId);
         currentProductId = productId;
 
-        JSONObject config = new JSONObject();
-        mWidget.reconfigure(currentProductId, config);
+        mWidget.reconfigure(currentProductId);
         setMessage("Loading...");
     }
 
@@ -108,6 +110,15 @@ implements FITAWebWidgetHandler {
     private String getUserId() {
         // NOOP
         return null;
+    }
+
+    private List<ManufacturedSize> getManufacturedSizes() {
+        List<ManufacturedSize> list = new ArrayList<ManufacturedSize>();
+        list.add(new ManufacturedSize("S", false));
+        list.add(new ManufacturedSize("M", true));
+        list.add(new ManufacturedSize("L", true));
+        list.add(new ManufacturedSize("XL", false));
+        return list;
     }
 
     private void onRecommendedSize(String size) {
@@ -123,19 +134,21 @@ implements FITAWebWidgetHandler {
 
     public void onWebWidgetReady(FITAWebWidget widget) {
         Log.d("fitaWidget", "READY");
-        try {
-            JSONObject config = new JSONObject()
-                .put("language", "en")
-                .put("shopCountry", "US");
 
-            // (optional) add the userId for logged-in users
-            if (getUserSid() != null) {
-                config.put("userId", getUserId());
-            }
+        WidgetOptions options = new WidgetOptions()
+            .setLanguage("en")
+            .setShopCountry("US")
+            .setMetric(WidgetOptions.UNITS_BRITISH);
 
-            widget.create(null, config);
-            setMessage("Ready");
-        } catch (JSONException e) {/* noop */}
+        // (optional) add the userId for logged-in users
+        if (getUserId() != null) {
+             options.setUserId(getUserId());
+        }
+
+        options.setManufacturedSizes(getManufacturedSizes());
+
+        widget.create(null, options);
+        setMessage("Ready");
     }
 
     public void onWebWidgetInit(FITAWebWidget widget) {
