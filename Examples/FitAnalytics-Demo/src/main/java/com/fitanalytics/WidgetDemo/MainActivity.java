@@ -43,6 +43,8 @@ implements FITAWebWidgetHandler {
     private String currentProductId = "";
 
     protected void onCreate(Bundle savedInstanceState) {
+        WebView.setWebContentsDebuggingEnabled(true);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
