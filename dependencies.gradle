@@ -1,11 +1,11 @@
 ext {
-  compileSdkVersion = 23
-  buildToolsVersion = '25.0.0'
   minSdkVersion = 19
+  compileSdkVersion = 23
   targetSdkVersion = 23
+  buildToolsVersion = '25.0.1'
+  supportLibVersion = '25.0.1'
   sourceCompatibilityVersion = JavaVersion.VERSION_1_7
   targetCompatibilityVersion = JavaVersion.VERSION_1_7
-  supportLibrariesVersion = '25.1.0'
 
   dep = [
       androidPlugin: 'com.android.tools.build:gradle:2.3.3',

@@ -2,3 +2,4 @@ rootProject.name = 'webwidget-root'
 
 include 'webwidget'
 include 'Examples/FitAnalytics-Demo'
+include 'Tests/TestRunner'
