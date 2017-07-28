@@ -95,8 +95,16 @@ implements FITAWebWidgetHandler {
 
     public Promise widgetCreate(String productSerial, WidgetOptions options) {
         productLoadDeferred = new AndroidDeferredObject();
-        mWidget.create(productSerial, options);
-        return productLoadDeferred.promise();
+        Promise promise = productLoadDeferred.promise();
+        if (options != null) {
+            mWidget.create(productSerial, options);
+        } else if (productSerial != null) {
+            mWidget.create(productSerial);
+        } else {
+            mWidget.create(null);
+            productLoadDeferred.resolve(true); // resolve immediately as no product is loaded
+        }
+        return promise;
     }
 
     public Promise widgetOpen(String productSerial, WidgetOptions options) {

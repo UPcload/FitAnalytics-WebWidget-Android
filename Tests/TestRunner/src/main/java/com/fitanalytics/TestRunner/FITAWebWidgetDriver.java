@@ -74,6 +74,8 @@ public class FITAWebWidgetDriver extends FITAWebWidget {
         + "            size1: this.$.trim(fp.find('.uclw_bar_middle .uclw_label').text()),"
         + "        }"
         + "    },"
+        + "    getWidgetOptionValue: function (key) { return window.__widgetManager.widget.options[key] },"
+        + "    getWidgetOptionType: function (key) { return Object.prototype.toString.call(window.__widgetManager.widget.options[key]).replace('[object ', '').replace(']', '') },"
         + "};"
         + "window.__widgetManager && (window.__widgetManager.enableLogs = true);"
         + "true";
@@ -133,5 +135,15 @@ public class FITAWebWidgetDriver extends FITAWebWidget {
     }
     public Promise testGetScreenName() {
         return driverCall("getScreenName", null);
+    }
+    public Promise testGetWidgetOptionValue(String name) {
+        JSONArray args = new JSONArray();
+        args.put(name);
+        return driverCall("getWidgetOptionValue", args);
+    }
+    public Promise testGetWidgetOptionType(String name) {
+        JSONArray args = new JSONArray();
+        args.put(name);
+        return driverCall("getWidgetOptionType", args);
     }
 }

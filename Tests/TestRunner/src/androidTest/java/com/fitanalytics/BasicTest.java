@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 import org.junit.Test;
 import org.junit.Rule;
 import org.junit.Before;
@@ -65,6 +68,15 @@ public class BasicTest {
         .then(new DonePipe() {
             public Promise pipeDone(Object result) {
                 return mainActivity.initializeDriver();
+            }
+        });
+    }
+
+    private Promise createAndConfigureWidget(final String productSerial, final WidgetOptions options) {
+        return createAndInitDriver()
+        .then(new DonePipe() {
+            public Promise pipeDone(Object result) {
+                return mainActivity.widgetCreate(productSerial, options);
             }
         });
     }
@@ -192,6 +204,68 @@ public class BasicTest {
         .then(new DoneCallback() { public void onDone(Object result) {
            Log.d("fitaWidget", "TEST widget open " + result.toString());  
             assertThat(result.toString(), is("\"lower_form_sp\""));
+            synchronized (sync) { sync.notify(); }
+        }});
+        synchronized (sync) { sync.wait(); }
+    }
+
+    @Test
+    public void testWidgeCreateOptions() throws Exception {
+        final Object sync = new Object();
+        String[] sizes = { "S", "M", "L" };
+
+        List<ManufacturedSize> msizes = new ArrayList<>();
+        msizes.add(new ManufacturedSize("S", true));
+        msizes.add(new ManufacturedSize("M", true));
+        msizes.add(new ManufacturedSize("L", true));
+        msizes.add(new ManufacturedSize("XL", false));
+
+        WidgetOptions options = new WidgetOptions()
+            .setLanguage("pt")
+            .setShopCountry("BR")
+            .setUserId("user1234")
+            .setThumb("https://widget.fitanalytics.com/images/integration/fit-finder-retina.png")
+            .setSizes(sizes)
+            .setManufacturedSizes(msizes)
+            .setCartEnabled(true);
+
+        createAndConfigureWidget("upcload-XX-test", options)
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            return widget.testGetWidgetOptionValue("language");
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            Log.d("fitaWidget", "option language " + result.toString());
+            assertThat(result.toString(), is("\"pt\""));
+            return widget.testGetWidgetOptionValue("shopCountry");
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            Log.d("fitaWidget", "option shopCountry " + result.toString());
+            assertThat(result.toString(), is("\"BR\""));
+            return widget.testGetWidgetOptionValue("userId");
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            Log.d("fitaWidget", "option userId " + result.toString());
+            assertThat(result.toString(), is("\"user1234\""));
+            return widget.testGetWidgetOptionValue("thumb");
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            Log.d("fitaWidget", "option thumb " + result.toString());
+            assertThat(result.toString(), is("\"https://widget.fitanalytics.com/images/integration/fit-finder-retina.png\""));
+            return widget.testGetWidgetOptionValue("sizes");
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            Log.d("fitaWidget", "option sizes " + result.toString());
+            assertThat(result.toString(), is("[\"S\",\"M\",\"L\"]"));
+            return widget.testGetWidgetOptionValue("manufacturedSizes");
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            Log.d("fitaWidget", "option manufacturedSizes " + result.toString());
+            assertThat(result.toString(), is("[{\"S\":true},{\"M\":true},{\"L\":true},{\"XL\":false}]"));
+            return widget.testGetWidgetOptionType("cart");
+        }})
+        .then(new DoneCallback() { public void onDone(Object result) {
+            Log.d("fitaWidget", "option cart type " + result.toString());
+            assertThat(result.toString(), is("\"Function\""));
             synchronized (sync) { sync.notify(); }
         }});
         synchronized (sync) { sync.wait(); }
