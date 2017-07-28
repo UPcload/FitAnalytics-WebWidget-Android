@@ -1,4 +1,4 @@
-## `WidgetOptions` Documentation
+## `WidgetOptions` class reference
 
 #### `public class WidgetOptions`
 

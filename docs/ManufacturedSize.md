@@ -1,4 +1,4 @@
-## `ManufacturedSize` Documentation
+## `ManufacturedSize` class reference
 
 #### `public class ManufacturedSize`
 

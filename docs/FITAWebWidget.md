@@ -2,6 +2,8 @@
 
 #### `public class FITAWebWidget`
 
+The main class that facilitates a communication with the actual widget inside the WebView container. 
+
 #### `public boolean load()`
 
 Begin loading the HTML widget container page.
@@ -101,12 +103,3 @@ Request a recommendation with productSerial and widget options (as JSONObject).
  * **Parameters:**
    * `productSerial` — (nullable) The new product serial
    * `options` — Additional widget options as JSONObject
-
-#### `private JSONArray createWidgetArguments(String productSerial, JSONObject options) throws JSONException`
-
-Prepares the `options` argument that's expected by several widget methods by merging `productSerial` (if present) into the `options` dictionary (if present).
-
- * **Parameters:**
-   * `productSerial` — (optional) Product serial
-   * `options` — (optional) Additional widget options
- * **Returns:** Resulting merged JSONObject

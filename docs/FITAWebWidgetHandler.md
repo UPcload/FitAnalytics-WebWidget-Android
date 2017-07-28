@@ -1,4 +1,8 @@
-## `FITAWebWidgetHandler` reference
+## `FITAWebWidgetHandler` class reference
+
+#### `public interface FITAWebWidgetHandler`
+
+The interface for callback handlers that's accepted by the FITAWebWidget class constructor.
 
 #### `public void onWebWidgetReady(FITAWebWidget widget)`
 
