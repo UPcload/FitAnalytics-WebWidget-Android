@@ -25,10 +25,11 @@ public class WidgetOptions {
     private String[] mSizes = null;
     private ManufacturedSize[] mManufacturedSizes = null;
 
-    // private String mOpen = null;
-    // private String mClose = null;
-    // private String mRecommend = null;
-    // private String mLoadError = null;
+    private String mOpenEnabled = "";
+    private String mCloseEnabled = "";
+    private String mCartEnabled = "";
+    private String mRecommendEnabled = "";
+    private String mLoadErrorEnabled = "";
 
     /**
      * Set `userId` parameter. When the user is logged in, you can pass down the unique ID of the user in the system. Should NOT be based on contact info, like emails or phone numbers. User ID is generally used for improved user data persistence.
@@ -118,6 +119,57 @@ public class WidgetOptions {
         return this;
     }
 
+
+    /**
+     * Enable or disable the widget add-to-cart callback (`onWebWidgetAddToCart`) and integration. When the add-to-cart integration is enabled, the widget will show an "Add size to cart" button instead, "Return to store" button on the results screen. When the user clicks the button, the `onWebWidgetAddToCart` handler method will be called with the selected size. This option will be set only on the `FITAWebWidget.create()` call, otherwise it's ignored. The default state is disabled.
+     * @param  state The "add-to-cart" callback state.
+     * @return       The current instance for chaining
+     */
+    public WidgetOptions setCartEnabled(Boolean state) {
+        mCartEnabled = state ? "1" : "0";
+        return this;
+    }
+
+    /**
+     * Enable or disable the widget open callback (`onWebWidgetOpen`). This option will be set only on the `FITAWebWidget.create()` call, otherwise it's ignored. The default state is enabled.
+     * @param  state The new "open" callback state.
+     * @return       The current instance for chaining
+     */
+    public WidgetOptions setOpenEnabled(Boolean state) {
+        mOpenEnabled = state ? "1" : "0";
+        return this;
+    }
+
+    /**
+     * Enable or disable the widget close callback (`onWebWidgetClose`). This option will be set only on the `FITAWebWidget.create()` call, otherwise it's ignored. The default state is enabled.
+     * @param  state The "open" callback state.
+     * @return       The current instance for chaining
+     */
+    public WidgetOptions setCloseEnabled(Boolean state) {
+        mCloseEnabled = state ? "1" : "0";
+        return this;
+    }
+
+    /**
+     * Enable or disable the widget recommed callback (`onWebWidgetRecommend`). This option will be set only on the `FITAWebWidget.create()` call, otherwise it's ignored. The default state is enabled.
+     * @param  state The "recommed" callback state.
+     * @return       The current instance for chaining
+     */
+    public WidgetOptions setRecommendEnabled(Boolean state) {
+        mRecommendEnabled = state ? "1" : "0";
+        return this;
+    }
+
+    /**
+     * Enable or disable the widget product load error callback (`onWebWidgetProductLoadError`). This option will be set only on the `FITAWebWidget.create()` call, otherwise it's ignored. The default state is enabled.
+     * @param  state The "load error" callback state.
+     * @return       The current instance for chaining
+     */
+    public WidgetOptions setLoadErrorEnabled(Boolean state) {
+        mLoadErrorEnabled = state ? "1" : "0";
+        return this;
+    }
+
     /**
      * Convert the WidgetOptions content to JSONObject representation, which is accepted by the widget.
      * @return The JSONObject result.
@@ -140,6 +192,13 @@ public class WidgetOptions {
             }
             if (mThumb != "") out.put("thumb", mThumb);
             if (mMetric != "") out.put("metric", mMetric);
+
+            if (mOpenEnabled != "") out.put("open", mOpenEnabled == "1");
+            if (mCloseEnabled != "") out.put("close", mCloseEnabled == "1");
+            if (mCartEnabled != "") out.put("cart", mCartEnabled == "1");
+            if (mRecommendEnabled != "") out.put("recommend", mRecommendEnabled == "1");
+            if (mLoadErrorEnabled != "") out.put("error", mLoadErrorEnabled == "1");
+
         } catch (JSONException e) {
             Log.e("fitaWidget", "Can't build options");
             return new JSONObject();
