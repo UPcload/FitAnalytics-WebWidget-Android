@@ -85,7 +85,17 @@ Initialize the widget controller with the WebView instance and assign self as th
 mWidget = new FITAWebWidget(mWebView, this);
 ```
 
-## Methods
+## Classes
+
+* [FITAWebWidget](docs/FITAWebWidget.md) .. The main class that facilitates a communication with the actual widget inside the WebView container
+
+* [FITAWebWidgetHandler](docs/FITAWebWidgetHandler.md) .. The interface widget callback handlers that's accepted by the FITAWebWidget class constructor
+
+* [WidgetOptions](docs/WidgetOptions.md) .. A helper class that encapsulates all accepted options for the FitAnalytics widget.
+
+* [ManufacturedSize](docs/ManufacturedSize.md) .. A helper class that encapsulates the code of the size and its availability status for the `manufacturedSizes` widget option.
+
+## FITAWebWidget Methods
 
 **`boolean load()`**
 
@@ -168,7 +178,7 @@ widget.reconfigure(null, (new JSONObject())
 );
 ```
 
-## Callbacks
+## FITAWebWidgetHandler Callbacks
 
 ```java
 public void onWebWidgetReady(FITAWebWidget widget);
