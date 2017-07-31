@@ -41,14 +41,14 @@ Set the `manufacturedSizes` parameter by List of ManufacturedSizes. Otherwise sa
 
 #### `public WidgetOptions setSizes(String[] sizes)`
 
-Set the `sizes` parameter as array of string. The parameter is simpler version of manufacturedSizes, except that is specifies only sizes that are available. Should be used only in cases when the size availability information isn't available.
+Set the `sizes` parameter as an array of strings. The parameter is simpler version of manufacturedSizes, except that it specifies only sizes that are available. Should be used only in cases when the size availability information isn't available.
 
  * **Parameters:** `sizes` — The array of size codes as strings
  * **Returns:** The current instance for chaining
 
 #### `public WidgetOptions setSizes(List<String> sizeList)`
 
-Set the `sizes` parameter as list of string. Otherwise same as above.
+Set the `sizes` parameter as a list of strings. Otherwise same as above.
 
  * **Parameters:** `sizes` — The list of size codes as strings
  * **Returns:** The current instance for chaining

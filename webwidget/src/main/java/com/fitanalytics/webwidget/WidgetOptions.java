@@ -81,7 +81,7 @@ public class WidgetOptions {
         return setManufacturedSizes(sizes);
     }
     /** 
-     * Set the `sizes` parameter as array of string. The parameter is simpler version of manufacturedSizes, except that is specifies only sizes that are available. Should be used only in cases when the size availability information isn't available.
+     * Set the `sizes` parameter as an array of strings. The parameter is simpler version of manufacturedSizes, except that it specifies only sizes that are available. Should be used only in cases when the size availability information isn't available.
      * @param  sizes The array of size codes as strings 
      * @return       The current instance for chaining
      */
@@ -90,7 +90,7 @@ public class WidgetOptions {
         return this;
     }
     /**
-     * Set the `sizes` parameter as list of string. Otherwise same as above.
+     * Set the `sizes` parameter as a list of strings. Otherwise same as above.
      * @param  sizes The list of size codes as strings 
      * @return       The current instance for chaining
      */
