@@ -87,7 +87,7 @@ mWidget = new FITAWebWidget(mWebView, this);
 
 ## Classes
 
-* [FITAWebWidget](docs/FITAWebWidget.md) .. The main class that facilitates a communication with the actual widget inside the WebView container
+* [FITAWebWidget](docs/FITAWebWidget.md) .. The main class that facilitates communication with the actual widget inside the WebView container
 
 * [FITAWebWidgetHandler](docs/FITAWebWidgetHandler.md) .. The interface widget callback handlers that's accepted by the FITAWebWidget class constructor
 
@@ -184,7 +184,7 @@ widget.reconfigure(null, (new JSONObject())
 public void onWebWidgetReady(FITAWebWidget widget);
 ```
 
-This method will be called when widget container inside the WebView has successfully loaded and is ready to accept commands.
+This method will be called when the widget container inside the WebView successfully loads and is ready to accept commands.
 
 &nbsp;
 
@@ -192,7 +192,7 @@ This method will be called when widget container inside the WebView has successf
 public void onWebWidgetInit(FITAWebWidget widget);
 ```
 
-This method will be called when widget instance inside the WebView has been successfully created.
+This method will be called when the widget instance inside the WebView is successfully created.
 
 &nbsp;
 
@@ -200,7 +200,7 @@ This method will be called when widget instance inside the WebView has been succ
 public void onWebWidgetLoadError(FITAWebWidget widget, String description);
 ```
 
-This method will be called when widget inside the WebView has failed to load or initialize for some reason.
+This method will be called when the widget inside the WebView fails to load or initialize for some reason.
 
 &nbsp;
 

@@ -41,14 +41,14 @@ Set the `manufacturedSizes` parameter by List of ManufacturedSizes. Otherwise sa
 
 #### `public WidgetOptions setSizes(String[] sizes)`
 
-Set the `sizes` parameter as array of string. The parameter is simpler version of manufacturedSizes, except that is specifies only sizes that are available. Should be used only in cases when the size availability information isn't available.
+Set the `sizes` parameter as an array of strings. The parameter is simpler version of manufacturedSizes, except that it specifies only sizes that are available. Should be used only in cases when the size availability information isn't available.
 
  * **Parameters:** `sizes` — The array of size codes as strings
  * **Returns:** The current instance for chaining
 
 #### `public WidgetOptions setSizes(List<String> sizeList)`
 
-Set the `sizes` parameter as list of string. Otherwise same as above.
+Set the `sizes` parameter as a list of strings. Otherwise same as above.
 
  * **Parameters:** `sizes` — The list of size codes as strings
  * **Returns:** The current instance for chaining
@@ -56,6 +56,7 @@ Set the `sizes` parameter as list of string. Otherwise same as above.
 #### `public WidgetOptions setThumb(String thumbUrl)`
 
 Set the `thumb` parameter. Absolute URL to a product image thumbnail. Thumbnail image dimensions should be at least 300 x 300 pixels for optimal appearance. The optional thumb parameter allows you to override the thumbnail we have stored for your garment (if any) with a custom image. You need to pass an absolute URL for this and it should be an image that is at least 300 x 300 pixels.
+The thumbnail URL should use https or you should configure the WebView to allow mixed protocols (http and https).
 
  * **Parameters:** `thumbUrl` — The complete publicly-accessible URL of the garment thumbnail.
  * **Returns:** The current instance for chaining
