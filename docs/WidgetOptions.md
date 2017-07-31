@@ -56,6 +56,7 @@ Set the `sizes` parameter as a list of strings. Otherwise same as above.
 #### `public WidgetOptions setThumb(String thumbUrl)`
 
 Set the `thumb` parameter. Absolute URL to a product image thumbnail. Thumbnail image dimensions should be at least 300 x 300 pixels for optimal appearance. The optional thumb parameter allows you to override the thumbnail we have stored for your garment (if any) with a custom image. You need to pass an absolute URL for this and it should be an image that is at least 300 x 300 pixels.
+The thumbnail URL should use https or you should configure the WebView to allow mixed protocols (http and https).
 
  * **Parameters:** `thumbUrl` — The complete publicly-accessible URL of the garment thumbnail.
  * **Returns:** The current instance for chaining
