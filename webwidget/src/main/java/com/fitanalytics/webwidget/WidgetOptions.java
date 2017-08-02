@@ -184,9 +184,9 @@ public class WidgetOptions {
                 out.put("sizes", new JSONArray(mSizes));
             }
             if (mManufacturedSizes != null) {
-                JSONArray ms = new JSONArray();
+                JSONObject ms = new JSONObject();
                 for (int i = 0; i < mManufacturedSizes.length; i++) {
-                    ms.put(i, mManufacturedSizes[i].toJSON());
+                    ms.put(mManufacturedSizes[i].mSize, mManufacturedSizes[i].mAvailable);
                 }
                 out.put("manufacturedSizes", ms);
             }
