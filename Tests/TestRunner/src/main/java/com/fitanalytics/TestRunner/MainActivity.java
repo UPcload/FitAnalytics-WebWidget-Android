@@ -94,28 +94,43 @@ implements FITAWebWidgetHandler {
     }
 
     public Promise widgetCreate(String productSerial, WidgetOptions options) {
-        productLoadDeferred = new AndroidDeferredObject();
-        Promise promise = productLoadDeferred.promise();
+        Promise promise;
+
+        if (productSerial != null) {
+            productLoadDeferred = new AndroidDeferredObject();
+            promise = productLoadDeferred.promise();
+        } else {
+            initDeferred = new AndroidDeferredObject();
+            promise = initDeferred.promise();
+        }
+
         if (options != null) {
             mWidget.create(productSerial, options);
-        } else if (productSerial != null) {
+        } else if (productSerial != null) { 
             mWidget.create(productSerial);
         } else {
             mWidget.create(null);
-            productLoadDeferred.resolve(true); // resolve immediately as no product is loaded
         }
         return promise;
     }
 
     public Promise widgetOpen(String productSerial, WidgetOptions options) {
         openDeferred = new AndroidDeferredObject();
-        mWidget.open(productSerial, options);
+        if (options != null) {
+            mWidget.open(productSerial, options);
+        } else {
+            mWidget.open(productSerial);
+        }
         return openDeferred.promise();
     }
 
     public Promise widgetReconfigure(String productSerial, WidgetOptions options) {
         productLoadDeferred = new AndroidDeferredObject();
-        mWidget.reconfigure(productSerial, options);
+        if (options != null) {
+            mWidget.reconfigure(productSerial, options);
+        } else {
+            mWidget.reconfigure(productSerial);
+        }
         return productLoadDeferred.promise();
     }
 
@@ -127,7 +142,11 @@ implements FITAWebWidgetHandler {
 
     public Promise widgetRecommend(String productSerial, WidgetOptions options) {
         recommendDeferred = new AndroidDeferredObject();
-        mWidget.recommend(productSerial, options);
+        if (options != null) {
+            mWidget.recommend(productSerial, options);
+        } else {
+            mWidget.recommend(productSerial);
+        }
         return recommendDeferred.promise();
     }
 
@@ -149,7 +168,7 @@ implements FITAWebWidgetHandler {
     public void onWebWidgetReady(FITAWebWidget widget) {
         Log.d("fitaWidget", "READY");
         if (readyDeferred != null) {
-            readyDeferred.resolve(true);
+            readyDeferred.resolve(new JSONObject());
             readyDeferred = null;
         }
     }
@@ -157,7 +176,7 @@ implements FITAWebWidgetHandler {
     public void onWebWidgetInit(FITAWebWidget widget) {
         Log.d("fitaWidget", "INIT");
         if (initDeferred != null) {
-            initDeferred.resolve(true);
+            initDeferred.resolve(new JSONObject());
             initDeferred = null;
         }
     }

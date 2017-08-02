@@ -162,7 +162,7 @@ public class FITAWebWidget {
      * @param options       Additional widget options
      */
     public void recommend(String productSerial) {
-        reconfigure(productSerial, (JSONObject) null);
+        recommend(productSerial, (JSONObject) null);
     }
     /**
      * Request a recommendation with productSerial and widget options (as JSONObject).

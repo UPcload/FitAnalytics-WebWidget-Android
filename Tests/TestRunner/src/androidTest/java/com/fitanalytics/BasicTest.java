@@ -81,14 +81,20 @@ public class BasicTest {
         });
     }
 
+    public void logTestName() {
+        Log.d("fitaWidget", Thread.currentThread().getStackTrace()[3].getMethodName());
+    }
+
     @Test
     public void testWebViewShouldExist() throws Exception {
+        logTestName();
         onView(withId(R.id.widget_webview)).check(matches(isDisplayed()));
         Log.d("fitaWidget", "TEST webview exists");
     }
 
     @Test
     public void testWidgetInitializer() throws Exception {
+        logTestName();
         final Object sync = new Object();
 
         mainActivity.initializeWidget()
@@ -104,6 +110,7 @@ public class BasicTest {
 
     @Test
     public void testWidgetLoad() throws Exception {
+        logTestName();
         final Object sync = new Object();
         createAndLoadWidget()
         .done(new DoneCallback() {
@@ -117,6 +124,7 @@ public class BasicTest {
 
     @Test
     public void testJavascriptEval() throws Exception {
+        logTestName();
         final Object sync = new Object();
         createAndLoadWidget()
         .then(new DonePipe() {
@@ -135,6 +143,7 @@ public class BasicTest {
 
     @Test
     public void testDriverInstall() throws Exception {
+        logTestName();
         final Object sync = new Object();
         createAndInitDriver()
         .then(new DonePipe() {
@@ -166,6 +175,7 @@ public class BasicTest {
 
     @Test
     public void testWidgetCreate() throws Exception {
+        logTestName();
         final Object sync = new Object();
         createAndInitDriver()
         .then(new DonePipe() {
@@ -186,6 +196,7 @@ public class BasicTest {
 
     @Test
     public void testWidgetCreateAndOpen() throws Exception {
+        logTestName();
         final Object sync = new Object();
         createAndInitDriver()
         .then(new DonePipe() { public Promise pipeDone(Object result) { 
@@ -209,8 +220,72 @@ public class BasicTest {
         synchronized (sync) { sync.wait(); }
     }
 
+    @Test(timeout=4000)
+    public void testWidgetCreateWithSerialAndRecommend() throws Exception {
+        logTestName();
+        final Object sync = new Object();
+        createAndInitDriver()
+        .then(new DonePipe() { public Promise pipeDone(Object result) { 
+            return mainActivity.widgetCreate("upcload-XX-test", new WidgetOptions());
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            JSONObject res = (JSONObject) result;
+            assertThat(res.optString("productSerial"), is("upcload-XX-test"));
+            return mainActivity.widgetRecommend(null, null);
+        }})
+        .then(new DoneCallback() { public void onDone(Object result) {
+            Log.d("fitaWidget", "TEST2 widget recommendation " + result.toString());  
+            synchronized (sync) { sync.notify(); }
+        }});
+        synchronized (sync) { sync.wait(); }
+    }
+
+    @Test(timeout=4000)
+    public void testWidgetCreateAndRecommendWithSerial() throws Exception {
+        logTestName();
+        final Object sync = new Object();
+        createAndInitDriver()
+        .then(new DonePipe() { public Promise pipeDone(Object result) { 
+            return mainActivity.widgetCreate(null, null);
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            JSONObject res = (JSONObject) result;
+            return mainActivity.widgetRecommend("upcload-XX-test", new WidgetOptions());
+
+        }})
+        .then(new DoneCallback() { public void onDone(Object result) {
+            Log.d("fitaWidget", "widget recommendation " + result.toString());  
+            synchronized (sync) { sync.notify(); }
+        }});
+        synchronized (sync) { sync.wait(); }
+    }
+
+    @Test(timeout=4000)
+    public void testWidgetCreateAndReconfigureWithSerialAndRecommend() throws Exception {
+        logTestName();
+        final Object sync = new Object();
+        createAndInitDriver()
+        .then(new DonePipe() { public Promise pipeDone(Object result) { 
+            return mainActivity.widgetCreate(null, null);
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) { 
+            return mainActivity.widgetReconfigure("upcload-XX-test", new WidgetOptions());
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+            JSONObject res = (JSONObject) result;
+            assertThat(res.optString("productSerial"), is("upcload-XX-test"));
+            return mainActivity.widgetRecommend(null, null);
+        }})
+        .then(new DoneCallback() { public void onDone(Object result) {
+            Log.d("fitaWidget", "widget recommendation " + result.toString());  
+            synchronized (sync) { sync.notify(); }
+        }});
+        synchronized (sync) { sync.wait(); }
+    }
+
     @Test
     public void testWidgeCreateOptions() throws Exception {
+        logTestName();
         final Object sync = new Object();
         String[] sizes = { "S", "M", "L" };
 
