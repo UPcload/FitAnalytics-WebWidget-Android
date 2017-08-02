@@ -335,7 +335,8 @@ public class BasicTest {
         }})
         .then(new DonePipe() { public Promise pipeDone(Object result) {
             Log.d("fitaWidget", "option manufacturedSizes " + result.toString());
-            assertThat(result.toString(), is("[{\"S\":true},{\"M\":true},{\"L\":true},{\"XL\":false}]"));
+            // presuming that the JSONObject serialization is alphabetically sorted by keys
+            assertThat(result.toString(), is("{\"L\":true,\"M\":true,\"S\":true,\"XL\":false}"));
             return widget.testGetWidgetOptionType("cart");
         }})
         .then(new DoneCallback() { public void onDone(Object result) {
