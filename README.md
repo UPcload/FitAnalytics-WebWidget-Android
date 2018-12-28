@@ -65,6 +65,7 @@ public class MainActivity
 extends AppCompatActivity
 implements FITAWebWidgetHandler {
   ...
+    }
 ```
 
 Add a property for storing the reference to the widget.
@@ -109,7 +110,7 @@ widget.load();
 
 **`void create(String productSerial, JSONObject options)`**
 
-Create a widget instance inside the container page (optionally) initialize it with `productSerial` and `options`. Options can be `nil` or a dictionary of various options arguments. Important supported options are listed [here](#configurable-widget-options).
+Create a widget instance inside the container page (optionally) initialize it with `productSerial` and `options`. Options can be `null` or a dictionary of various options arguments. Important supported options are listed [here](#configurable-widget-options).
 
 This method should be called only after the **onWebWidgetReady** callback has been called (or inside the callback) and will trigger the **onWebWidgetInit** callback. If the `productSerial` has been specified, the **onWebWidgetProductLoad** will be also called, once the product info has been loaded. 
 
@@ -240,7 +241,7 @@ For the complete list of available widget options and their description, please 
 
 ## Common pitfalls
 
-###Opening Fit Finder in background
+### Opening Fit Finder in background
 In some implementations, Fit Finder is opened in the background for every PDP in hidden mode. In those implementations, clicking the size help link unhides Fit Finder.
 Such an implementation should be avoided as it is inefficient for several reasons:
 1. It runs unnecessary Javascript code in the background for users who are not interested in size help, which means extra app resources are consumed for no reason.
@@ -249,7 +250,7 @@ Such an implementation should be avoided as it is inefficient for several reason
 Fortunately, the Fit Analytics API already provides support for efficient resources usage together with optimal loading time. Your code should indeed load the widget in the background, but not open it.
 
 A quick summary of the recommended process is below:
-1. There needs to be only a **single** instance of the widget that's running in the background.
+1. There needs to be only a **single** instance of the widget that runs in the background.
 2. You can use the FITAWebWidget::reconfigure(productSerial,...) method to trigger widget reconfiguration when a new product is viewed by the user.
 3. Once you know that the product is supported, you can request the immediate recommendation (PDP-embedded recommendation) via FITAWebWidget::recommend(...) method.
 4. When a user navigates to another product you can reconfigure the widget with the new product info and call the FITAWebWidget::recommend(...) again.

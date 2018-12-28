@@ -14,7 +14,7 @@ android {
         sourceCompatibility rootProject.ext.sourceCompatibilityVersion
         targetCompatibility rootProject.ext.targetCompatibilityVersion
     }
-    
+
     defaultConfig {
         applicationId "com.fitanalytics.TestRunner"
         minSdkVersion rootProject.ext.minSdkVersion
