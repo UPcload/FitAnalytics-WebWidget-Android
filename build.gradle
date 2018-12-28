@@ -2,13 +2,16 @@ subprojects {
   repositories {
     jcenter()
     mavenCentral()
+      google()
+
   }
   buildscript {
     repositories {
       jcenter()
+      google()
     }
     dependencies {
-      classpath 'com.android.tools.build:gradle:2.3.3'
+      classpath 'com.android.tools.build:gradle:3.2.1'
     }
   }
 }
