@@ -8,7 +8,7 @@ ext {
   targetCompatibilityVersion = JavaVersion.VERSION_1_7
 
   dep = [
-      androidPlugin: 'com.android.tools.build:gradle:2.3.1',
+      androidPlugin: 'com.android.tools.build:gradle:3.2.1',
   ]
 
   isCi = "true".equals(System.getenv('CI'))
