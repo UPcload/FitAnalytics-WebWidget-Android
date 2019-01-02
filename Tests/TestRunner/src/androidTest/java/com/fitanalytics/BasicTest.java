@@ -203,8 +203,9 @@ public class BasicTest {
             return widget.testGetScreenName();
         }})
         .then(new DoneCallback() { public void onDone(Object result) {
-           Log.d("fitaWidget", "TEST widget open " + result.toString());  
-            assertThat(result.toString(), is("\"lower_form_sp\""));
+           Log.d("fitaWidget", "TEST widget open " + result.toString());
+            assertThat(result.toString(), is("\"body_mass\""));
+
             synchronized (sync) { sync.notify(); }
         }});
         synchronized (sync) { sync.wait(); }
