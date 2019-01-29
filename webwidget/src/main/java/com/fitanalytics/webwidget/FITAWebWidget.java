@@ -3,20 +3,17 @@ package com.fitanalytics.webwidget;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
-
-import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebView;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 
 public class FITAWebWidget {
     public static String widgetContainerURL = "https://widget.fitanalytics.com/widget/app-embed.html";
@@ -159,7 +156,6 @@ public class FITAWebWidget {
     /**
      * Request a recommendation with productSerial. 
      * @param productSerial (nullable) The new product serial
-     * @param options       Additional widget options
      */
     public void recommend(String productSerial) {
         recommend(productSerial, (JSONObject) null);
@@ -198,6 +194,7 @@ public class FITAWebWidget {
         // create and register the custom WebViewClient
         final FITAWebViewClient client = new FITAWebViewClient(this);
         webView.setWebViewClient(client);
+        String cookie = CookieManager.getInstance().getCookie(FITAWebWidget.widgetContainerURL);
 
         // create the message interface
         webView.addJavascriptInterface(this, "fitaMessageInterface");
