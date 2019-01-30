@@ -4,7 +4,7 @@
 
 The WebWidget SDK allows integrating the Fit Analytics Size Advisor widget into your own Android app.
 
-As a first step, we suggest that you familiarize yourself with the Fit Analytics web-based Size Advisor service by:  
+As a first step, we suggest that you familiarize yourself with the Fit Analytics web-based Size Advisor service by:
 1. Reading through the Fit Analytics website and trying out a sample product - https://www.fitanalytics.com/  
 2. Reading through the Fit Analytics web developers guide - http://developers.fitanalytics.com/documentation  
 
@@ -24,6 +24,7 @@ The SDK introduces a layer that imitates a web-based (JavaScript) integration of
 
 1. Android SDK platform https://developer.android.com/studio/index.html#downloads
 2. Gradle build tool https://gradle.org/install/
+3. [API-Level 19+](https://developer.android.com/reference/android/os/Build.VERSION_CODES.html#KITKAT),  `Build.VERSION_CODES.KITKAT`
 
 **Step 1.** Clone this repository: 
 
@@ -61,9 +62,7 @@ import com.fitanalytics.webwidget.FITAWebWidget;
 The MainActivity class implements the **FITAWebWidgetHandler** interface, so that all widget callbacks are implemented directly on it.
 
 ```java
-public class MainActivity 
-extends AppCompatActivity
-implements FITAWebWidgetHandler {
+public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHandler {
   ...
     }
 ```
@@ -82,7 +81,7 @@ private WebView mWebView;
 
 Initialize the widget controller with the WebView instance and assign self as the callback handler.
 
-```objc
+```java
 mWidget = new FITAWebWidget(mWebView, this);
 ```
 
@@ -239,6 +238,69 @@ This method will be called when the widget has successfully opened after the `op
 
 For the complete list of available widget options and their description, please see http://developers.fitanalytics.com/documentation#list-callbacks-parameters
 
+---
+ 
+## Purchase reporting
+ 
+ Purchase reporting usually means that when the user receives a confirmation of a successful purchases, namely, the user sees the Order Confirmation Page 
+ (a.k.a OCP or checkout page), the app will report all items in the order to Fit Analytics. The reporting is done by sending a simple HTTP request.
+ 
+ The usual report is a collection of attributes such as the order ID, the product serial for each purchased item, purchased size, price, currency, etc.
+ 
+ The most common attributes are:
+ 
+ * **orderId** .. (required) unique identifier of the order
+ * **productSerial** .. (required) serial number/ID of the product (independent of purchased size!); it should match with the `productSerial` that was used for PDP size advisor.
+ * **userId** .. if the user is registered customer, their shop-specific ID
+ * **shopArticleCode** .. (optional) the size-specific identifier
+ * **purchasedSize** .. the size code of the purchased size
+ * **shopCountry** .. if the shop has country-specific versions, specify it via this attribute
+ * **language** .. if your shop has language-specific versions, you can specify the language in which the purchase was made (which helps identify the user's sizing system)
+ 
+ For the complete list of possible reported fields and their description, please see https://developers.fitanalytics.com/documentation#sales-data-exchange
+ 
+### Usage
+  
+ 
+The **FITAPurchaseReporter** implements   **AsyncTask<FITAPurchaseReport, Integer, Long>**
+in order to call it asynchronously in the background with the method  **new FITAPurchaseReporter().execute(FITAPurchaseReport... fitaPurchaseReports);**.
+See the Android SDK Documentation for [AsyncTask ](https://developer.android.com/reference/android/os/AsyncTask)
+ 
+
+Import the **FITAPurchaseReport** and the **FITAPurchaseReporter** classes fom com.fitanalytics.com.webwidget package in your UI
+   
+  
+ ```
+import com.fitanalytics.webwidget.FITAPurchaseReport;
+import com.fitanalytics.webwidget.FITAPurchaseReporter;
+```
+
+ Create a new instance of the purchase reporter (**FITAPurchaseReporter**).
+ 
+ ```java
+ FITAPurchaseReporter reporter = new FITAPurchaseReporter();
+ ```
+ 
+ For each line item in the customer's order, create a new instance of **FITAPurchaseReport** and send it via reporter.
+ For your convenience the constructor is overloaded. In order to have the best results in prediction use as many as possible information of the ordered items. 
+ 
+ Fit Anayltics needs at least the **String productSerial** and **String orderId**. We highly recommend to use **FITAPurchaseReport(String productSerial, String orderId, String purchasedSize , Double price, String currency)**
+ to get the best results.
+   
+ ```java
+ FITAPurchaseReport report = FITAPurchaseReport(String productSerial, String orderId, String purchasedSize , Double price, String currency);
+
+ // add additional attributes, such as shopCountry, lanugage etc. here:
+ report.setShopCountry("DE");
+ report.setShopLanguage("de");
+ ```
+ 
+Calling the **AsyncTask** method **reporter.execute(FITAPurchaseReport... fitaPurchaseReports)** will fire the report(s) in the background in a single thread. 
+Consult the [AsyncTask Documenation](https://developer.android.com/reference/android/os/AsyncTask) for more information.
+ 
+
+
+
 ## Common pitfalls
 
 ### Opening Fit Finder in background
@@ -258,3 +320,4 @@ A quick summary of the recommended process is below:
 
 A summary of the recommended steps can be found in this wiki:
 https://github.com/UPcload/FitAnalytics-WebWidget-Android/wiki/Common-integration-process-notes
+

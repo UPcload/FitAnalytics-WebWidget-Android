@@ -6,22 +6,16 @@ public class FITAPurchaseReport {
     private String productSerial;
     // mandatory field
     private String orderId;
+    // mandatory field
     private Double price;
+    // mandatory field
     private String currency;
-
     private String userId;
     private String purchasedSize;
-
     private String shopArticleCode;
-
     private String sizeRegion;
     private String shop;
     private String shopCountry;
-    /***
-     * your shop has language-specific versions, you can specify the language in which the purchase was made
-     * (which helps identify the user's sizing system)
-     *
-     */
     private String shopLanguage;
     private String shopSizingSystem;
     private String ean;
@@ -36,12 +30,39 @@ public class FITAPurchaseReport {
     }
 
     private String sid;
-    // TODO why is this per report? it will be set anyway to "embed-android" in FitPurchasereporter.
-    private String hostname;
 
-    public FITAPurchaseReport(String productSerial, String orderId, Double price, String currency) {
+    /**
+     * A FITAPurchaseReport represents an order about a purchased item identified by the productSerial and the orderId
+     * Use @see FITAPurchaseReporter.sendReport(FITAPurchaseReport report) to report to the Fit Analytics endpoints
+     * @param productSerial
+     * @param orderId
+     */
+    public FITAPurchaseReport(String productSerial, String orderId) {
+        this(productSerial, orderId, null, null, null);
+    }
+
+
+    /**
+     * A FITAPurchaseReport represents an order about a purchased item identified by the following parameters
+     * @param productSerial
+     * @param orderId
+     * @param purchasedSize
+     */
+    public FITAPurchaseReport(String productSerial, String orderId, String purchasedSize) {
+        this(productSerial, orderId, purchasedSize, null, null);
+    }
+        /**
+         * A FITAPurchaseReport represents an order about a purchased item identified by the productSerial and the orderId
+         * Use @see FITAPurchaseReporter.sendReport(FITAPurchaseReport report) to report to the Fit Analytics endpoints
+         * @param productSerial
+         * @param orderId
+         * @param price
+         * @param currency
+         */
+    public FITAPurchaseReport(String productSerial, String orderId, String purchasedSize , Double price, String currency) {
         this.currency = currency;
         this.price = price;
+        this.purchasedSize = purchasedSize;
         this.orderId = orderId;
         this.productSerial = productSerial;
     }
@@ -51,24 +72,12 @@ public class FITAPurchaseReport {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public String getCurrency() {
         return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     public String getUserId() {
@@ -157,13 +166,5 @@ public class FITAPurchaseReport {
 
     public void setSid(String sid) {
         this.sid = sid;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
     }
 }

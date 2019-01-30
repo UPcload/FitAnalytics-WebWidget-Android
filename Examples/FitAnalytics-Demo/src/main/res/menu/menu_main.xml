@@ -12,6 +12,11 @@
         android:orderInCategory="100"
         android:title="@string/action_recommend"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_purchase"
+        android:icon="@drawable/add_to_card"
+        android:title="@string/action_purchase"
+        app:showAsAction="ifRoom"/>
     <!--
     <item
         android:id="@+id/action_edit"
@@ -24,6 +29,8 @@
         android:icon="@drawable/close"
         android:title="@string/action_close"
         app:showAsAction="ifRoom"/>
+
+
     <!--
     <item
         android:id="@+id/action_settings"
