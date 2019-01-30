@@ -1,40 +1,39 @@
 package com.fitanalytics.WidgetDemo;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import android.webkit.WebView;
+import com.fitanalytics.webwidget.FITAPurchaseReport;
+import com.fitanalytics.webwidget.FITAPurchaseReporter;
+import com.fitanalytics.webwidget.FITAWebWidget;
+import com.fitanalytics.webwidget.FITAWebWidgetHandler;
+import com.fitanalytics.webwidget.ManufacturedSize;
+import com.fitanalytics.webwidget.WidgetOptions;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.fitanalytics.webwidget.FITAWebWidgetHandler;
-import com.fitanalytics.webwidget.FITAWebWidget;
-import com.fitanalytics.webwidget.WidgetOptions;
-import com.fitanalytics.webwidget.ManufacturedSize;
-
-import android.util.Log;
-
-public class MainActivity 
-extends AppCompatActivity
-implements FITAWebWidgetHandler {
+public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHandler {
 
     private WebView mWebView;
     private FITAWebWidget mWidget;
     private FITAWebWidgetHandler mHandler;
+
+    private FITAPurchaseReport report;
+    private FITAPurchaseReporter reporter;
+
 
     private EditText mEditProductId;
     private Button mSubmitProductId;
@@ -65,6 +64,9 @@ implements FITAWebWidgetHandler {
 
         mWidget = new FITAWebWidget(mWebView, this);
         mWidget.load();
+
+        // setup the reporter
+
     }
 
     @Override
@@ -191,4 +193,6 @@ implements FITAWebWidgetHandler {
         Log.d("fitaWidget", "RECOMMEND " + productId + ", " + size + ", " + (details == null ? "null" : details.toString()));
         onRecommendedSize(size);
     }
+
+
 }
