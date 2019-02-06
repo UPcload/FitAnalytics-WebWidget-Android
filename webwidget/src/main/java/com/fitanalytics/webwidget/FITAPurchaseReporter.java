@@ -25,20 +25,25 @@ import javax.net.ssl.HttpsURLConnection;
 public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer, Long> {
 
 
-    public static final String FITA_WIDGET = "fitaWidget";
+    private static final String FITA_WIDGET = "fitaWidget";
     private final static String REPORT_URL1 = "https://collector.fitanalytics.com/purchases";
     private final static String REPORT_URL2 = "https://collector-de.fitanalytics.com/purchases";
+    private static final String ENCODED_SESSION_PREFIX = "s%3A";
     /***
      * Some CDN block USER_AGENT based on java, so we need to create our own.
      */
-    public static String USER_AGENT = "Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1-FitAnalytics v0.0.1";
+    private static String USER_AGENT = "Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1-FitAnalytics v0.0.1";
     private boolean isDryRun = false;
     private boolean isTestEnv = false;
 
 
-    public FITAPurchaseReporter() {
+    protected FITAPurchaseReporter() {
     }
 
+    /**
+     * Create a FITAReporter
+     * @param context
+     */
     public FITAPurchaseReporter(Context context) {
         try {
             USER_AGENT = WebSettings.getDefaultUserAgent(context);
@@ -100,10 +105,9 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
 
     /**
      * fires a report to the collector endpoint
-     * silently accepts
      * @param uri
      * @param reportAsDictionary
-     * @return
+     * @return true if it could connect to the collector endpoint
      */
     private boolean sendRequest(String uri, Map<String, String> reportAsDictionary) {
         URL url = null;
@@ -118,6 +122,8 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
             try {
                 urlConnection.setRequestMethod("GET");
                 // Cloudflare rejects User-Agent "Java/xxx"
+                // so we need to set it to a proper user agent
+                // in test env the default fake agent will be used
                 urlConnection.setRequestProperty("User-Agent", USER_AGENT);
                 responseCode = urlConnection.getResponseCode();
                 if (isTestEnv) {
@@ -184,7 +190,7 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
 
     /**
      *
-     * TODO : make this JAVA_8  compatible
+     * TODO : make this JAVA_8 compatible
      */
     Map<String,String> processReport (FITAPurchaseReport report) {
         Map<String, String> dict = new Hashtable<String, String>();
@@ -220,11 +226,18 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
             String connect_sid =report.getSid();
 
             try {
-                String cookies = CookieManager.getInstance().getCookie(FITAWebWidget.widgetContainerURL);
-                connect_sid = getCookieValue(cookies).get("connect.sid");
+                String cookies  = CookieManager.getInstance().getCookie(FITAWebWidget.widgetContainerURL);
+                String shop     = getShopFromReport(report);
+                connect_sid     = getCookieValueForShop(cookies,shop);
             } catch (NullPointerException ex) {
                 // we are not in an web env.
-            }finally {
+            } catch (RuntimeException rex)
+            {
+                // we  have no Cookie
+            }
+
+            finally {
+                // connect_sid
                 putIfNotNull(KEYS.SID,connect_sid, dict);
             }
 
@@ -241,8 +254,35 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
         return dict;
     }
 
+    /**
+     * Helper Method
+     * Determine the shop from report
+     * @param report
+     * @return shop
+     */
+    static String getShopFromReport(FITAPurchaseReport report) {
+        String shop = report.getShop();
+        if (shop == null || shop == "") {
+            shop = "";
+            String productSerial = report.getProductSerial();
+            if(productSerial != null) {
+                String idx[] = productSerial.split("-");
+                if (idx.length > 1) {
+                    shop = idx[0];
+                }
+            }
+        }
+        return shop;
+    }
 
-    Map<String, String> getCookieValue(String cookieHeader) {
+    /**
+     * Helper Method
+     * for parsing a cookieHeader
+     * @param cookieHeader
+     * @return a dictionary of key-value pairs
+     *
+     * */
+    static  Map<String, String> getCookieValue(String cookieHeader) {
             Map<String, String> result = new HashMap<String, String>();
             String[] cookies = cookieHeader.split( "; " );
             for ( int i = 0; i < cookies.length; i++ ) {
@@ -293,6 +333,46 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
 
             return result.toString();
         }
+
+
+    /**
+     * Returns the sessionid part from a signed sessionid
+     * according to https://www.npmjs.com/package/cookie-signature
+     * Does not validate the signature
+     * @param signedCookieValue
+     * @return the raw cookieValue if the cookieValue is signed, the inputValue
+     * signedCookieValue otherwise
+     *
+     */
+
+    static String parseSignedCookie(String signedCookieValue) {
+        String result=signedCookieValue;
+        if (signedCookieValue != null) {
+            String[] idx = signedCookieValue.split("\\.");
+            if ((idx.length > 1) && (idx[0].startsWith(ENCODED_SESSION_PREFIX))) {
+                    result = idx[0].substring(ENCODED_SESSION_PREFIX.length());
+                }
+            }
+        return result;
+    }
+
+    static String getCookieValueForShop(String cookieHeader, String shop_prefix){
+        String cookie ="";
+        if (cookieHeader == null)
+        {
+            throw  new RuntimeException("Cookie not present");
+        }
+        if (shop_prefix != null && shop_prefix != "") {
+             cookie = getCookieValue(cookieHeader).get("connect.sid."+shop_prefix);
+            if (cookie == null || cookie =="") {
+                cookie = getCookieValue(cookieHeader).get("connect.sid");
+            }
+        }
+
+        return  (cookie==null?"":cookie);
+
+    };
+
 
 
     /**

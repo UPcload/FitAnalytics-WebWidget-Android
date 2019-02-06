@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class FITAPurchaseReporterIntegrationTest{
 
-    FITAPurchaseReporter reporter;
+    private FITAPurchaseReporter reporter;
     private FITAPurchaseReport report;
     private FITAPurchaseReport reportMinimal;
     private FITAPurchaseReport reportFull;
@@ -48,9 +48,8 @@ public class FITAPurchaseReporterIntegrationTest{
 
         report.setProductSerial("test-54321");
         result = reporter.sendReport(report);
-        assertEquals( "Expect to collect a conform productSerial (inlucluding shop-prefix)", true, result);
+        assertEquals( "Expect to collect a conform productSerial (including shop-prefix)", true, result);
 
-        // report a
         report.setProductSerial("test54321");
         result = reporter.sendReport(report);
         assertEquals("Expect to collect a non conform productSerial (missing shop-prefix)",true, result);
