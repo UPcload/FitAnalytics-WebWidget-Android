@@ -41,7 +41,6 @@
                 android:id="@+id/resultText"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:text=""
                 android:textSize="8pt"></TextView>
         </LinearLayout>
 

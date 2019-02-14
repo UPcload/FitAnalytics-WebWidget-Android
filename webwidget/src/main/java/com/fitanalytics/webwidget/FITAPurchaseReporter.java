@@ -2,6 +2,7 @@ package com.fitanalytics.webwidget;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
@@ -65,6 +66,14 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
         }
         return totalSize;
     }
+    @Override
+    protected void onPostExecute(Long result) {
+       if (isTestEnv) {
+           Log.d(FITA_WIDGET, "Number of reports sent : " + result);
+;       }
+    }
+
+
 
 
     public boolean isDryRun() {
@@ -89,6 +98,7 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
     boolean sendReport(FITAPurchaseReport report){
         Map<String, String> reportAs = processReport (report);
         boolean result = false;
+
 
         if (reportAs.size()==0){
             return result;
@@ -119,6 +129,9 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
             uri += "?" + query;
             url = new URL(uri);
             HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+            if (isTestEnv) {
+                Log.d(FITA_WIDGET, "connect to " + REPORT_URL2);
+            }
             try {
                 urlConnection.setRequestMethod("GET");
                 // Cloudflare rejects User-Agent "Java/xxx"
@@ -130,17 +143,21 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
                     boolean isPurchaseRecorded = getResponse(urlConnection);
                     if (isPurchaseRecorded)
                     {
-                        Log.d(FITA_WIDGET, "Purchase is successfully sent , productSerial is " +reportAsDictionary.get("productSerial"));
+                        Log.d(FITA_WIDGET, "Purchase is successfully sent with " +uri);
                     }
                 }
 
             } finally {
                 urlConnection.disconnect();
                 isSuccess = (responseCode == 200);
+                if (isTestEnv) {
+                    Log.d(FITA_WIDGET, "responseCode from " + REPORT_URL2 + " was " +responseCode  );
+                }
             }
         } catch (MalformedURLException e) {
             Log.e(FITA_WIDGET, "Mailformed collector url");
         } catch (IOException e) {
+            Log.d(FITA_WIDGET, e.getMessage());
             Log.d(FITA_WIDGET, "Could not send the report with productSerial: " +reportAsDictionary.get("productSerial"));
         }
         return isSuccess;
@@ -362,18 +379,40 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
         {
             throw  new RuntimeException("Cookie not present");
         }
+
         if (shop_prefix != null && shop_prefix != "") {
-             cookie = getCookieValue(cookieHeader).get("connect.sid."+shop_prefix);
-            if (cookie == null || cookie =="") {
-                cookie = getCookieValue(cookieHeader).get("connect.sid");
-            }
+            cookie = getCookieValue(cookieHeader).get("connect.sid." + shop_prefix);
         }
 
-        return  (cookie==null?"":cookie);
+        if (cookie == null || cookie =="" || shop_prefix =="") {
+            cookie = getCookieValue(cookieHeader).get("connect.sid");
+        }
+
+        return  (cookie==null?"":parseSignedCookie(cookie));
 
     };
 
-
+    /***
+     * TODO: android versions with 4.x and older have problems with certificates
+     *
+     * @param sourceUrl
+     * @return
+     */
+    private String useHttpOnAndroidVersion4(String sourceUrl) {
+        // Simply return the current URL on newer builds of Android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return sourceUrl;
+        }
+        // Otherwise replace https with http to bypass Android 4.x devices having older certificates
+        try {
+            URL tempURL = new URL(sourceUrl);
+            String androidV4URL = "http" + sourceUrl.substring(tempURL.getProtocol().length());
+            Log.d(FITA_WIDGET, "replacement_url=" + androidV4URL);
+            return androidV4URL;
+        } catch (MalformedURLException e) {
+            return sourceUrl;
+        }
+    }
 
     /**
      * provides easy access to possible values to report

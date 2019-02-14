@@ -58,15 +58,6 @@ public interface FITAWebWidgetHandler {
     public void onWebWidgetClose(FITAWebWidget widget, String productId, String size, JSONObject details);
 
     /**
-     * This method will be called when the user of the widget specifically clicks on the add-to-cart inside the widget.
-     * @param widget The widget controller instance
-     * @param productId The ID of the product
-     * @param size The size of the product that should be added to cart.
-     * @param details The details object.
-     */
-    public void onWebWidgetAddToCart (FITAWebWidget widget, String productId, String size, JSONObject details);
-
-    /**
      * This method will be called after the `FITAWebWidget.recommend` call, when the widget has received and processed the size recommendation.
      * @param productId The ID of the product
      * @param size The recommended size of the product.

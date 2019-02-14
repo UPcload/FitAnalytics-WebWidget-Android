@@ -86,6 +86,34 @@ public class FITAPurchaseReporterUnitTest {
         actual = reporter.parseSignedCookie(cookie_value);
         assertEquals(expected,actual);
 
+
+
+        cookie_value ="s%3AdY3jXbQ-_AVO5MGmCwU2jHX-lTlAdGkW.jIJn9ERoOo3KTaSnKv3E3lZKCBqyMLOvcbZbaaQaGOw";
+        expected = "dY3jXbQ-_AVO5MGmCwU2jHX-lTlAdGkW";
+        actual = reporter.parseSignedCookie(cookie_value);
+        assertEquals(expected,actual);
+    }
+
+
+    @Test
+    public void getCookieValueForShop() {
+        String cookie_header = "__cfduid=d548b30461fe3b3c3cc709ea30a02c98d1546606472; connect.sid=s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s";
+        String expected = "qFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH";
+        String actual = reporter.getCookieValueForShop(cookie_header, "test");
+        assertEquals(expected,actual);
+
+        cookie_header = "__cfduid=d548b30461fe3b3c3cc709ea30a02c98d1546606472; connect.sid.testshop=s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s";
+        expected = "qFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH";
+        actual = reporter.getCookieValueForShop(cookie_header, "testshop");
+        assertEquals(expected,actual);
+
+        cookie_header = "";
+        expected = "";
+        actual = reporter.getCookieValueForShop(cookie_header, "testshop");
+        assertEquals(expected,actual);
+
+
+
     }
 
 

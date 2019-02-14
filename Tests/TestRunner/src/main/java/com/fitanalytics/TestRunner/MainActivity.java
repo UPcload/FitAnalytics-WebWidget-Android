@@ -214,13 +214,6 @@ public class MainActivity extends AppCompatActivity implements FITAWebWidgetHand
         }
     }
 
-    public void onWebWidgetAddToCart(FITAWebWidget widget, String productId, String size, JSONObject details) {
-        Log.d("fitaWidget", "CART " + productId + ", " + size + ", " + (details == null ? "null" : details.toString()));
-        if (closeDeferred != null) {
-            closeDeferred.resolve(buildArgs(productId, size, details));
-            closeDeferred = null;
-        }
-    }
 
     public void onWebWidgetRecommend(FITAWebWidget widget, String productId, String size, JSONObject details) {
         Log.d("fitaWidget", "RECOMMEND " + productId + ", " + size + ", " + (details == null ? "null" : details.toString()));

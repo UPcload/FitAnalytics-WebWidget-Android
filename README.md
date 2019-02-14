@@ -243,7 +243,7 @@ For the complete list of available widget options and their description, please 
 ## Purchase reporting
  
  Purchase reporting usually means that when the user receives a confirmation of a successful purchases, namely, the user sees the Order Confirmation Page 
- (a.k.a OCP or checkout page), the app will report all items in the order to Fit Analytics. The reporting is done by sending a simple HTTP request.
+ (a.k.a OCP or checkout page), the app will report all items in the order to Fit Analytics. The reporting is done by sending a simple HTTP request via https.
  
  The usual report is a collection of attributes such as the order ID, the product serial for each purchased item, purchased size, price, currency, etc.
  
@@ -257,14 +257,13 @@ For the complete list of available widget options and their description, please 
  * **shopCountry** .. if the shop has country-specific versions, specify it via this attribute
  * **language** .. if your shop has language-specific versions, you can specify the language in which the purchase was made (which helps identify the user's sizing system)
  
- For the complete list of possible reported fields and their description, please see https://developers.fitanalytics.com/documentation#sales-data-exchange
+For the complete list of possible reported fields and their description, please see https://developers.fitanalytics.com/documentation#sales-data-exchange
  
 ### Usage
-  
  
 The **FITAPurchaseReporter** implements   **AsyncTask<FITAPurchaseReport, Integer, Long>**
 in order to call it asynchronously in the background with the method  **new FITAPurchaseReporter().execute(FITAPurchaseReport... fitaPurchaseReports);**.
-See the Android SDK Documentation for [AsyncTask ](https://developer.android.com/reference/android/os/AsyncTask)
+See the Android SDK Documentation for [AsyncTask ](https://developer.android.com/reference/android/os/AsyncTask).
  
 
 Import the **FITAPurchaseReport** and the **FITAPurchaseReporter** classes fom com.fitanalytics.com.webwidget package in your UI
@@ -281,8 +280,8 @@ import com.fitanalytics.webwidget.FITAPurchaseReporter;
  FITAPurchaseReporter reporter = new FITAPurchaseReporter();
  ```
  
- For each line item in the customer's order, create a new instance of **FITAPurchaseReport** and send it via reporter.
- For your convenience the constructor is overloaded. In order to have the best results in prediction use as many as possible information of the ordered items. 
+ For each line item in the customer's order, create a new instance of **FITAPurchaseReport**.
+ For your convenience, the constructor is overloaded. In order to have the best results in prediction use as many as possible information of the ordered items. 
  
  Fit Anayltics needs at least the **String productSerial** and **String orderId**. We highly recommend to use **FITAPurchaseReport(String productSerial, String orderId, String purchasedSize , Double price, String currency)**
  to get the best results.
@@ -295,9 +294,9 @@ import com.fitanalytics.webwidget.FITAPurchaseReporter;
  report.setShopLanguage("de");
  ```
  
+Send the reports via reporter with **reporter.execute(FITAPurchaseReport... fitaPurchaseReports)**. You can not re-use the reporter. Once you have called **execute(FITAPurchaseReport... fitaPurchaseReports)**. 
 Calling the **AsyncTask** method **reporter.execute(FITAPurchaseReport... fitaPurchaseReports)** will fire the report(s) in the background in a single thread. 
 Consult the [AsyncTask Documenation](https://developer.android.com/reference/android/os/AsyncTask) for more information.
- 
 
 
 

@@ -72,9 +72,16 @@ public class FITAPurchaseReporterIntegrationTest{
 
     }
 
+
+    /***
+     * see AsyncTask Doumentation
+     *
+     */
+
     @Test
     public void testReporterAsyncTask(){
         assertEquals("Expect to send a single (1) reports asynchronously",reporter.doInBackground(reportMinimal), new Long(1));
         assertEquals("Expect to send multiple (3) reports asynchronously",reporter.doInBackground(report,reportMinimal,reportFull), new Long(3));
     }
+
 }

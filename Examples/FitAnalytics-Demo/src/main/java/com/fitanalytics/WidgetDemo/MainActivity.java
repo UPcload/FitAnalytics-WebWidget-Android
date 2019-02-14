@@ -1,5 +1,6 @@
 package com.fitanalytics.WidgetDemo;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fitanalytics.webwidget.FITAPurchaseReport;
 import com.fitanalytics.webwidget.FITAPurchaseReporter;
@@ -56,17 +58,27 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
             text.clear();
             text.append(currentProductId);
         }
+
         mSubmitProductId = (Button) findViewById(R.id.submitProductId);
         mResultText = (TextView) findViewById(R.id.resultText);
 
         // set up the widget webview
         mWebView = (WebView) findViewById(R.id.widget_webview);
 
+
         mWidget = new FITAWebWidget(mWebView, this);
         mWidget.load();
 
-        // setup the reporter
 
+    }
+
+    private void createReportingTask() {
+        reporter = new FITAPurchaseReporter(this);
+        /****
+         * This is a test env, remove this when
+         */
+        reporter.setDryRun(true);
+        reporter.setTestEnv(true);
     }
 
     @Override
@@ -84,6 +96,7 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
         int id = item.getItemId();
 
         if (id == R.id.action_open) {
+            currentProductId = "alphaindustries-MMC10015U1";
             mWidget.open(currentProductId);
 
             setMessage("Opening ...");
@@ -97,6 +110,19 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
             setMessage("Recommending...");
         }
 
+        else if (id == R.id.action_purchase) {
+
+            String productId = mEditProductId.getText().toString();
+            if (productId.equals("")) {
+                setMessage("Info: please enter a productID ");
+            }
+            else {
+                // setup the reporterAsycTask
+                createReportingTask();
+                setMessage("Purchasing ... " + productId);
+                onAddToCartAndPurchase(productId);
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -106,7 +132,7 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
         currentProductId = productId;
 
         mWidget.reconfigure(currentProductId);
-        setMessage("Loading...");
+        setMessage("loading widget... "+productId );
     }
 
     //////////////////////////////////
@@ -130,9 +156,33 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
         setMessage(text);
     }
 
+
+    private void onAddToCartAndPurchase(String productId) {
+
+        Toast.makeText(this, "Product  " + productId + " added to shopping cart", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Product  " + productId + " was ordered", Toast.LENGTH_SHORT).show();
+
+
+        FITAPurchaseReport report = createReport(productId);
+
+
+        AsyncTask task  = reporter.execute(report);
+        Toast.makeText(this, "Purchase for " + productId + " was fired", Toast.LENGTH_SHORT).show();
+    }
+
     private void setMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         mResultText.setText(msg);
     }
+
+
+   //// fake orderID, create report
+   private FITAPurchaseReport createReport(String productId) {
+        String orderId = "test-purchase-from-android";
+        report = new FITAPurchaseReport(productId, orderId);
+        return report;
+    }
+
 
     //// FITAWebWidgetHandler event callbacks ////
 
@@ -181,11 +231,6 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
 
     public void onWebWidgetClose(FITAWebWidget widget, String productId, String size, JSONObject details) {
         Log.d("fitaWidget", "CLOSE " + productId + ", " + size + ", " + (details == null ? "null" : details.toString()));
-        onRecommendedSize(size);
-    }
-
-    public void onWebWidgetAddToCart(FITAWebWidget widget, String productId, String size, JSONObject details) {
-        Log.d("fitaWidget", "CART " + productId + ", " + size + ", " + (details == null ? "null" : details.toString()));
         onRecommendedSize(size);
     }
 

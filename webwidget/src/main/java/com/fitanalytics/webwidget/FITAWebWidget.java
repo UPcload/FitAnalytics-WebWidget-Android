@@ -19,7 +19,6 @@ public class FITAWebWidget {
     public static String widgetContainerURL = "https://widget.fitanalytics.com/widget/app-embed.html";
 
     protected WebView mView;
-    protected FITAWebViewClient mClient;
     protected FITAWebWidgetHandler mHandler;
     protected boolean isLoading;
 
@@ -194,7 +193,6 @@ public class FITAWebWidget {
         // create and register the custom WebViewClient
         final FITAWebViewClient client = new FITAWebViewClient(this);
         webView.setWebViewClient(client);
-        String cookie = CookieManager.getInstance().getCookie(FITAWebWidget.widgetContainerURL);
 
         // create the message interface
         webView.addJavascriptInterface(this, "fitaMessageInterface");
@@ -291,12 +289,7 @@ public class FITAWebWidget {
                     String size = arguments.optString(1);
                     JSONObject details = arguments.optJSONObject(2);
                     mHandler.onWebWidgetClose(this, productId, size, details);
-                } else if (action.equals("cart") && arguments != null) {
-                    String productId = arguments.optString(0);
-                    String size = arguments.optString(1);
-                    JSONObject details = arguments.optJSONObject(2);
-                    mHandler.onWebWidgetAddToCart(this, productId, size, details);
-                } else if (action.equals("recommend") && arguments != null) {
+               } else if (action.equals("recommend") && arguments != null) {
                     String productId = arguments.optString(0);
                     String size = arguments.optString(1);
                     JSONObject details = arguments.optJSONObject(2);
@@ -324,6 +317,7 @@ public class FITAWebWidget {
 
     protected void sendMessage(JSONObject message) {
         String encodedMessage = encodeMessage(message);
+        Log.d("FITA-WEBWIDGET", decodeMessage(encodedMessage).toString());
         String code = "window.__widgetManager.receiveMessage(\"" + encodedMessage + "\")";
 
         evaluateJavascript(code);
