@@ -294,7 +294,8 @@ public class FITAWebWidget {
                     String size = arguments.optString(1);
                     JSONObject details = arguments.optJSONObject(2);
                     mHandler.onWebWidgetAddToCart(this, productId, size, details);
-                 } else if (action.equals("recommend") && arguments != null) {    String productId = arguments.optString(0);
+                 } else if (action.equals("recommend") && arguments != null) {
+                    String productId = arguments.optString(0);
                     String size = arguments.optString(1);
                     JSONObject details = arguments.optJSONObject(2);
                     mHandler.onWebWidgetRecommend(this, productId, size, details);

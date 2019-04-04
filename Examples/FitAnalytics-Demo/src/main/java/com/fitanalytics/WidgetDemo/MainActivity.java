@@ -97,7 +97,7 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
             currentProductId = mEditProductId.getText().toString();
             if (currentProductId.equals("")){
                 // to avoid manual typing
-                currentProductId = "alphaindustries-MMC10015U1";
+                currentProductId = "widgetpreview-upper-m";
             }
             mWidget.open(currentProductId);
 
