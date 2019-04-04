@@ -109,7 +109,7 @@ widget.load();
 
 **`void create(String productSerial, JSONObject options)`**
 
-Create a widget instance inside the container page (optionally) initialize it with `productSerial` and `options`. Options can be `null` or a dictionary of various options arguments. Important supported options are listed [here](#configurable-widget-options).
+Create a widget instance inside the container page (optionally) initialize it with `productSerial` and `options`. `productSerial`  are composed of your shop-prefix, a dash, and the productId. Example: `happyshop-123556`.  Options can be `null` or a dictionary of various options arguments. Important supported options are listed [here](#configurable-widget-options).
 
 This method should be called only after the **onWebWidgetReady** callback has been called (or inside the callback) and will trigger the **onWebWidgetInit** callback. If the `productSerial` has been specified, the **onWebWidgetProductLoad** will be also called, once the product info has been loaded. 
 
@@ -250,7 +250,7 @@ For the complete list of available widget options and their description, please 
  The most common attributes are:
  
  * **orderId** .. (required) unique identifier of the order
- * **productSerial** .. (required) serial number/ID of the product (independent of purchased size!); it should match with the `productSerial` that was used for PDP size advisor.
+ * **productSerial** .. (required) serial number/ID of the product (independent of purchased size!) including your shop-prefix. Example: `happyshop-123556` ; it should match with the `productSerial` that was used for PDP size advisor.
  * **userId** .. if the user is registered customer, their shop-specific ID
  * **shopArticleCode** .. (optional) the size-specific identifier
  * **purchasedSize** .. the size code of the purchased size
