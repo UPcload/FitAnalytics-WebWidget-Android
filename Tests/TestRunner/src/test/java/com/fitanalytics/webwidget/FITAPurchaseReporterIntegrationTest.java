@@ -18,11 +18,11 @@ public class FITAPurchaseReporterIntegrationTest{
     public void setup(){
         reporter = new FITAPurchaseReporter();
 
-        report = new FITAPurchaseReport("test-12345","12345", "XXL-oversize", 0.01d, "EUR");
+        report = new FITAPurchaseReport("testexampleshoprefix-12345","12345", "XXL-oversize", 0.01d, "EUR");
 
-        reportMinimal = new FITAPurchaseReport("12345-minimal","1234minimal");
+        reportMinimal = new FITAPurchaseReport("testexampleshoprefix-12345minimal","1234minimal");
 
-        reportFull = new FITAPurchaseReport("12345full","1234minimal");
+        reportFull = new FITAPurchaseReport("testexampleshoprefix-12345full","1234minimal");
         reportFull.setPurchasedSize("XL");
         reportFull.setEan("1234567890123");
         reportFull.setFunnel("ab-funnel");
@@ -46,10 +46,16 @@ public class FITAPurchaseReporterIntegrationTest{
 
         reporter.setDryRun(false);
 
-        report.setProductSerial("test-54321");
+        report.setProductSerial("testexampleshoprefix-54321");
         result = reporter.sendReport(report);
         assertEquals( "Expect to collect a conform productSerial (including shop-prefix)", true, result);
 
+        /*******************************************************************************************
+         * IMPORTANT FitAnalytics purchase endpoint silently accepts any productSerial and does not report an error.
+         *
+         * In this example the shop-prefix is missing but still the SDK doesn't break or throws an error
+         * Please make sure that your production code has the prefix of your shop
+         *******************************************************************************************/
         report.setProductSerial("test54321");
         result = reporter.sendReport(report);
         assertEquals("Expect to collect a non conform productSerial (missing shop-prefix)",true, result);
@@ -57,7 +63,7 @@ public class FITAPurchaseReporterIntegrationTest{
         report.setPurchasedSize("XL/test");
 
 
-        report.setProductSerial("test-23232323232323");
+        report.setProductSerial("testexampleshoprefix-23232323232323");
         result = reporter.sendReport(report);
         assertEquals("Expect to collect a double prefixed productSerial", true, result);
 
