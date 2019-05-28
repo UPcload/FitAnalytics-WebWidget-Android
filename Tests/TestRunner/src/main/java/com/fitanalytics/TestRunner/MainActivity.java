@@ -1,40 +1,26 @@
 package com.fitanalytics.TestRunner;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
+import android.util.Log;
 import android.webkit.WebView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONArray;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import com.fitanalytics.webwidget.FITAWebWidgetHandler;
 import com.fitanalytics.webwidget.FITAWebWidget;
+import com.fitanalytics.webwidget.FITAWebWidgetHandler;
 import com.fitanalytics.webwidget.WidgetOptions;
-import com.fitanalytics.webwidget.ManufacturedSize;
 
-
-import org.jdeferred.android.AndroidDeferredObject;
 import org.jdeferred.Deferred;
 import org.jdeferred.Promise;
+import org.jdeferred.android.AndroidDeferredObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import android.util.Log;
-
-public class MainActivity 
-extends AppCompatActivity
-implements FITAWebWidgetHandler {
+public class MainActivity extends AppCompatActivity implements FITAWebWidgetHandler {
 
     public FITAWebWidgetDriver mWidget;
     public WebView mWebView;
     private FITAWebWidgetHandler mHandler;
-
     private Deferred readyDeferred = null;
     private Deferred initDeferred = null;
     private Deferred productLoadDeferred = null;
@@ -62,6 +48,7 @@ implements FITAWebWidgetHandler {
                 def.resolve(self.mWidget);
             }
         });
+
         return def.promise();
     }
 
@@ -150,6 +137,8 @@ implements FITAWebWidgetHandler {
         return recommendDeferred.promise();
     }
 
+
+
     //// FITAWebWidgetHandler event callbacks ////
 
     private JSONObject buildArgs(String productSerial, String size, JSONObject details) {
@@ -224,7 +213,6 @@ implements FITAWebWidgetHandler {
             closeDeferred = null;
         }
     }
-
     public void onWebWidgetAddToCart(FITAWebWidget widget, String productId, String size, JSONObject details) {
         Log.d("fitaWidget", "CART " + productId + ", " + size + ", " + (details == null ? "null" : details.toString()));
         if (closeDeferred != null) {
@@ -240,4 +228,6 @@ implements FITAWebWidgetHandler {
             recommendDeferred = null;
         }
     }
+    
+
 }

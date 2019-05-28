@@ -3,26 +3,22 @@ package com.fitanalytics.webwidget;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
-
-import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebView;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 
 public class FITAWebWidget {
     public static String widgetContainerURL = "https://widget.fitanalytics.com/widget/app-embed.html";
 
     protected WebView mView;
-    protected FITAWebViewClient mClient;
     protected FITAWebWidgetHandler mHandler;
     protected boolean isLoading;
 
@@ -159,7 +155,6 @@ public class FITAWebWidget {
     /**
      * Request a recommendation with productSerial. 
      * @param productSerial (nullable) The new product serial
-     * @param options       Additional widget options
      */
     public void recommend(String productSerial) {
         recommend(productSerial, (JSONObject) null);
@@ -299,7 +294,7 @@ public class FITAWebWidget {
                     String size = arguments.optString(1);
                     JSONObject details = arguments.optJSONObject(2);
                     mHandler.onWebWidgetAddToCart(this, productId, size, details);
-                } else if (action.equals("recommend") && arguments != null) {
+                 } else if (action.equals("recommend") && arguments != null) {
                     String productId = arguments.optString(0);
                     String size = arguments.optString(1);
                     JSONObject details = arguments.optJSONObject(2);
@@ -327,6 +322,7 @@ public class FITAWebWidget {
 
     protected void sendMessage(JSONObject message) {
         String encodedMessage = encodeMessage(message);
+        Log.d("FITA-WEBWIDGET", decodeMessage(encodedMessage).toString());
         String code = "window.__widgetManager.receiveMessage(\"" + encodedMessage + "\")";
 
         evaluateJavascript(code);

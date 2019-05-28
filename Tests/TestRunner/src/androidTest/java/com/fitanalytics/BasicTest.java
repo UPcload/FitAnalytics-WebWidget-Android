@@ -1,43 +1,33 @@
-import java.util.List;
-import java.util.ArrayList;
+package com.fitanalytics;
 
-import org.junit.Test;
-import org.junit.Rule;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.equalTo;
-
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
+import com.fitanalytics.TestRunner.FITAWebWidgetDriver;
 import com.fitanalytics.TestRunner.MainActivity;
 import com.fitanalytics.TestRunner.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fitanalytics.webwidget.ManufacturedSize;
+import com.fitanalytics.webwidget.WidgetOptions;
 
 import org.jdeferred.DoneCallback;
 import org.jdeferred.DonePipe;
 import org.jdeferred.Promise;
+import org.json.JSONObject;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import com.fitanalytics.webwidget.WidgetOptions;
-import com.fitanalytics.webwidget.ManufacturedSize;
-import com.fitanalytics.TestRunner.FITAWebWidgetDriver;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.util.Log;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(AndroidJUnit4.class)
 public class BasicTest {
@@ -213,8 +203,9 @@ public class BasicTest {
             return widget.testGetScreenName();
         }})
         .then(new DoneCallback() { public void onDone(Object result) {
-           Log.d("fitaWidget", "TEST widget open " + result.toString());  
-            assertThat(result.toString(), is("\"lower_form_sp\""));
+           Log.d("fitaWidget", "TEST widget open " + result.toString());
+            assertThat(result.toString(), is("\"body_mass\""));
+
             synchronized (sync) { sync.notify(); }
         }});
         synchronized (sync) { sync.wait(); }
@@ -284,7 +275,7 @@ public class BasicTest {
     }
 
     @Test
-    public void testWidgeCreateOptions() throws Exception {
+    public void testWidgetCreateOptions() throws InterruptedException {
         logTestName();
         final Object sync = new Object();
         String[] sizes = { "S", "M", "L" };
@@ -346,4 +337,8 @@ public class BasicTest {
         }});
         synchronized (sync) { sync.wait(); }
     }
+
+
+
+
 }
