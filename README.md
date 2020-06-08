@@ -242,7 +242,7 @@ For the complete list of available widget options and their description, please 
  
 ## Purchase reporting
  
- Purchase reporting usually means that when the user receives a confirmation of a successful purchases, namely, the user sees the Order Confirmation Page 
+ Purchase reporting usually means that when the user receives a confirmation of a successful purchase, namely, the user sees the Order Confirmation Page 
  (a.k.a OCP or checkout page), the app will report all items in the order to Fit Analytics. The reporting is done by sending a simple HTTP request via https.
  
  The usual report is a collection of attributes such as the order ID, the product serial for each purchased item, purchased size, price, currency, etc.
