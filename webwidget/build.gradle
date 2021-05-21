@@ -23,3 +23,5 @@ android {
     minSdkVersion rootProject.ext.minSdkVersion
   }
 }
+
+apply from: '../gradle/gradle-mvn-push.gradle'
