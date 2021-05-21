@@ -275,7 +275,7 @@ public class BasicTest {
     }
 
     @Test
-    public void testWidgeCreateOptions() throws InterruptedException {
+    public void testWidgetCreateOptions() throws InterruptedException {
         logTestName();
         final Object sync = new Object();
         String[] sizes = { "S", "M", "L" };
@@ -337,5 +337,8 @@ public class BasicTest {
         }});
         synchronized (sync) { sync.wait(); }
     }
+
+
+
 
 }

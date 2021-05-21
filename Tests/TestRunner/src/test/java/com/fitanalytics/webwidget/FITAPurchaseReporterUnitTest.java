@@ -53,6 +53,13 @@ public class FITAPurchaseReporterUnitTest {
 
 
     @Test
+    public void testTestVenAndDryRun() {
+        reporter = new FITAPurchaseReporter();
+        assertEquals(false, reporter.isDryRun());
+        assertEquals(false, reporter.isTestEnv());
+    }
+
+    @Test
     public void testGetCookie(){
         String connect_sid = reporter.getCookieValue("__cfduid=d548b30461fe3b3c3cc709ea30a02c98d1546606472; connect.sid=s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s").get("connect.sid");
         assertEquals("s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s",connect_sid);

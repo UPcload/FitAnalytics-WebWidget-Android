@@ -84,6 +84,10 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
         isDryRun = dryRun;
     }
 
+    public boolean isTestEnv() {
+        return isTestEnv;
+    }
+
     public void setTestEnv(boolean testEnv) {
         isTestEnv = testEnv;
     }
