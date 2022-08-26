@@ -167,4 +167,6 @@ public class FITAPurchaseReport {
     public void setSid(String sid) {
         this.sid = sid;
     }
+
+    // TODO: shouldn't we create another prop for SSID?
 }

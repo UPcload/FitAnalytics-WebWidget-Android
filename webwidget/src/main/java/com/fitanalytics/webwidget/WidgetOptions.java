@@ -17,6 +17,7 @@ public class WidgetOptions {
     public static String UNITS_METRIC = "1";
     public static String UNITS_BRITISH = "2";
 
+    // TODO: maybe we should add SSID 
     private String mUserId = "";
     private String mLanguage = "";
     private String mShopCountry = "";
@@ -40,6 +41,8 @@ public class WidgetOptions {
         mUserId = userId;
         return this;
     }
+
+    // TODO: also maybe we need to define public WidgetOptions setShopSessionId
     
     /**
      * Set the `language` parameter. This parameter manually forces the widget to be delivered in the specified 2-letter language (ISO 639-1), for example "en" for English, "de" for German, "fr" for French or “pt” for Portuguese.

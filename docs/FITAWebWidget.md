@@ -15,21 +15,21 @@ Begin loading the HTML widget container page.
 Create the widget with a product serial and widget options. Must be called after the `FITAWebWidgetHandler.onWebWidgetReady` callback.
 
  * **Parameters:**
-   * `productSerial` — (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded.
+   * `productSerial` — (nullable) The serial ID of the product (color-level-id) to load at beginning. When `null` no product will be loaded [as a result the widget will NOT be created].
    * `options` — Initial set of options for the widget as WidgetOptions object.
 
 #### `public void create(String productSerial)`
 
 Create the widget with a product serial. For details see above.
 
- * **Parameters:** `productSerial` — (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded.
+ * **Parameters:** `productSerial` — (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded [as a result the widget will NOT be created].
 
 #### `public void create(String productSerial, JSONObject options)`
 
 Create the widget with a product serial and widget options as JSONObject. For details see above.
 
  * **Parameters:**
-   * `productSerial` — (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded.
+   * `productSerial` — (nullable) The serial ID of the product to load at beginning. When `null` no product will be loaded [as a result the widget will NOT be created].
    * `options` — Initial set of options for the widget as JSONObject object.
 
 #### `public void open(String productSerial, WidgetOptions options)`
@@ -37,21 +37,21 @@ Create the widget with a product serial and widget options as JSONObject. For de
 Show the actual widget. When the widget finishes opening, it will call the `FITAWebWidgetHandler.onWebWidgetOpen` callback. Allows passing new product serial and/or widget options object.
 
  * **Parameters:**
-   * `productSerial` — (nullable) The new product serial
+   * `productSerial` — (nullable) The serial ID of the product
    * `options` — Additional widget options as WidgetOptions
 
 #### `public void open(String productSerial)`
 
 Open the widget with a new product serial. For details see above.
 
- * **Parameters:** `productSerial` — (nullable) the new product serial
+ * **Parameters:** `productSerial` — (nullable) The serial ID of the product
 
 #### `public void open(String productSerial, JSONObject options)`
 
 Open the widget with a new product serial and/or widget object (as JSONObejct). For details see above.
 
  * **Parameters:**
-   * `productSerial` — (nullable) the new product serial
+   * `productSerial` — (nullable) The serial ID of the product
    * `options` — Additional widget options as JSONObject
 
 #### `public void reconfigure(String productSerial, WidgetOptions options)`
@@ -59,21 +59,21 @@ Open the widget with a new product serial and/or widget object (as JSONObejct). 
 Reconfigure the widget with the new product serial and/or widget options object. The new product serial triggers a loading of new product.
 
  * **Parameters:**
-   * `productSerial` — (nullable) the new product serial
+   * `productSerial` — (nullable) the new product serial ID
    * `options` — widget options as WidgetOptions
 
 #### `public void reconfigure(String productSerial)`
 
 Reconfigure the widget with a new product serial.
 
- * **Parameters:** `productSerial` — (nullable) the new product serial
+ * **Parameters:** `productSerial` — (nullable) the new product serial ID
 
 #### `public void reconfigure(String productSerial, JSONObject options)`
 
 Reconfigure the widget with the new product serial and/or widget options object (as JSONObject).
 
  * **Parameters:**
-   * `productSerial` — (nullable) the new product serial
+   * `productSerial` — (nullable) the new product serial ID
    * `options` — widget options as JSONObject
 
 #### `public void close()`
@@ -85,7 +85,7 @@ Close the widget. Removes the widget markup and event handlers, potentially free
 Request a recommendation with productSerial and widget options. The recommended size will be returned as an argument to the `FITAWebWidgetHandler.onWebWidgetRecommend` callback.
 
  * **Parameters:**
-   * `productSerial` — (nullable) The new product serial
+   * `productSerial` — (nullable) The serial ID of the product
    * `options` — Additional widget options
 
 #### `public void recommend(String productSerial)`
@@ -93,7 +93,7 @@ Request a recommendation with productSerial and widget options. The recommended 
 Request a recommendation with productSerial.
 
  * **Parameters:**
-   * `productSerial` — (nullable) The new product serial
+   * `productSerial` — (nullable) The serial ID of the product
    * `options` — Additional widget options
 
 #### `public void recommend(String productSerial, JSONObject options)`
@@ -101,5 +101,5 @@ Request a recommendation with productSerial.
 Request a recommendation with productSerial and widget options (as JSONObject).
 
  * **Parameters:**
-   * `productSerial` — (nullable) The new product serial
+   * `productSerial` — (nullable) The serial ID of the product
    * `options` — Additional widget options as JSONObject

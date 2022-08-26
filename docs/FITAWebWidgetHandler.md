@@ -30,7 +30,7 @@ This method will be called when the widget successfully loads the product info. 
 
  * **Parameters:**
    * `widget` — The widget controller instance
-   * `productId` — The ID of the product
+   * `productId` — The serial ID of the product
    * `details` — The details object
 
 #### `public void onWebWidgetProductLoadError(FITAWebWidget widget, String productId, JSONObject details)`
@@ -39,7 +39,7 @@ This method will be called when the widget failed to load the product info or th
 
  * **Parameters:**
    * `widget` — The widget controller instance
-   * `productId` — The ID of the product
+   * `productId` — The serial ID of the product
    * `details` — The details object
 
 #### `public void onWebWidgetOpen(FITAWebWidget widget, String productId)`
@@ -48,7 +48,7 @@ This method will be called when the widget has successfully opened after the `op
 
  * **Parameters:**
    * `widget` — The widget controller instance
-   * `productId` — The ID of the product
+   * `productId` — The serial ID of the product
 
 #### `public void onWebWidgetClose(FITAWebWidget widget, String productId, String size, JSONObject details)`
 
@@ -56,7 +56,7 @@ This method will be called when the user of the widget specifically requests clo
 
  * **Parameters:**
    * `widget` — The widget controller instance
-   * `productId` — The ID of the product
+   * `productId` — The serial ID of the product
    * `size` — The recommended size of the product, if there was a recommendation. `null` if there wasn't any recommendation.
    * `details` — The details object.
 
@@ -66,7 +66,7 @@ This method will be called when the user of the widget specifically clicks on th
 
  * **Parameters:**
    * `widget` — The widget controller instance
-   * `productId` — The ID of the product
+   * `productId` — The serial ID of the product
    * `size` — The size of the product that should be added to cart.
    * `details` — The details object.
 
@@ -75,6 +75,6 @@ This method will be called when the user of the widget specifically clicks on th
 This method will be called after the `FITAWebWidget.recommend` call, when the widget has received and processed the size recommendation.
 
  * **Parameters:**
-   * `productId` — The ID of the product
+   * `productId` — The serial ID of the product
    * `size` — The recommended size of the product.
    * `details` — The details object.

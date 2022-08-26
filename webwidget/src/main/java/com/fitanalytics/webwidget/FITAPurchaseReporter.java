@@ -27,6 +27,8 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
 
 
     private static final String FITA_WIDGET = "fitaWidget";
+    // TODO:
+    // since we swithced to "//widget.fitanalytics.com/report_purchase.js", shouldn't we update the code here?
     private final static String REPORT_URL1 = "https://collector.fitanalytics.com/purchases";
     private final static String REPORT_URL2 = "https://collector-de.fitanalytics.com/purchases";
     private static final String ENCODED_SESSION_PREFIX = "s%3A";
