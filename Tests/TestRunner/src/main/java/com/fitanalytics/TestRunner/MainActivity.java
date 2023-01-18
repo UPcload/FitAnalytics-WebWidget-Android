@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import com.fitanalytics.webwidget.FITAWebWidget;
 import com.fitanalytics.webwidget.FITAWebWidgetHandler;
 import com.fitanalytics.webwidget.WidgetOptions;
+import com.fitanalytics.TestRunner.R;
 
 import org.jdeferred.Deferred;
 import org.jdeferred.Promise;

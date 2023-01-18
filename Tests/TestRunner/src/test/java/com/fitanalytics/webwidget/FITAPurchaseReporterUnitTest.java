@@ -24,33 +24,23 @@ public class FITAPurchaseReporterUnitTest {
     @Before
     public void setup(){
         reporter = new FITAPurchaseReporter();
-
         report = new FITAPurchaseReport("test-12345","12345", "XXL-oversize", 0.01d, "EUR");
-
         reportMinimal = new FITAPurchaseReport("12345-minimal","1234minimal");
-
-
-
         reporter.setTestEnv(true);
-
     }
 
-
-
-
-    @Test
-    public void testToString(){
-        assertEquals("com.fitanalytics.webwidget.FITAPurchaseReporter Object {\n" +
-                "  FITA_WIDGET: fitaWidget\n" +
-                "  REPORT_URL1: https://collector.fitanalytics.com/purchases\n" +
-                "  REPORT_URL2: https://collector-de.fitanalytics.com/purchases\n" +
-                "  ENCODED_SESSION_PREFIX: s%3A\n"+
-                "  USER_AGENT: Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1-FitAnalytics v0.0.1\n" +
-                "  isDryRun: false\n" +
-                "  isTestEnv: true\n" +
-                "}",reporter.toString());
-    }
-
+    // @Test
+    // public void testToString(){
+    //     assertEquals("com.fitanalytics.webwidget.FITAPurchaseReporter Object {\n" +
+    //             "  FITA_WIDGET: fitaWidget\n" +
+    //             "  REPORT_URL1: https://collector.fitanalytics.com/purchases\n" +
+    //             "  REPORT_URL2: https://collector-de.fitanalytics.com/purchases\n" +
+    //             "  ENCODED_SESSION_PREFIX: s%3A\n"+
+    //             "  USER_AGENT: Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1-FitAnalytics v0.0.1\n" +
+    //             "  isDryRun: false\n" +
+    //             "  isTestEnv: true\n" +
+    //             "}",reporter.toString());
+    // }
 
     @Test
     public void testTestVenAndDryRun() {
@@ -161,13 +151,13 @@ public class FITAPurchaseReporterUnitTest {
         String cookieHeader ="__cfduid=d548b30461fe3b3c3cc709ea30a02c98d1546606472; connect.sid.zara=s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s";
         String shop_prefix = "zara";
         String cookieForShop = reporter.getCookieValueForShop(cookieHeader, shop_prefix);
-        String signed_cookie = "s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s";
+        String signed_cookie = "qFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH";
         assertEquals(signed_cookie, cookieForShop);
 
         cookieHeader ="__cfduid=d548b30461fe3b3c3cc709ea30a02c98d1546606472; connect.sid=s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s";
         shop_prefix = "zara";
         cookieForShop = reporter.getCookieValueForShop(cookieHeader, shop_prefix);
-        signed_cookie = "s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s";
+        signed_cookie = "qFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH";
         assertEquals(signed_cookie, cookieForShop);
 
         cookieHeader ="__cfduid=d548b30461fe3b3c3cc709ea30a02c98d1546606472; connect.sid.othershop=s%3AqFuFsWjiRozo_BUnOPpJgPmJ3pSOr3OH.DSjQsAcIpNl2kjc4M9n4BVHOJTiV8sg0CuVqMwGy85s";

@@ -1,14 +1,14 @@
 ext {
   minSdkVersion = 19
-  compileSdkVersion = 28
-  targetSdkVersion = 28
-  buildToolsVersion = '28.0.3'
-  supportLibVersion = '28.0.3'
-  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-  targetCompatibilityVersion = JavaVersion.VERSION_1_7
+  compileSdkVersion = 30
+  targetSdkVersion = 30
+  buildToolsVersion = '30.0.3'
+  supportLibVersion = '30.0.3'
+  sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+  targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
   dep = [
-      androidPlugin: 'com.android.tools.build:gradle:3.2.1',
+      androidPlugin: 'com.android.tools.build:gradle:7.3.1',
   ]
 
   isCi = "true".equals(System.getenv('CI'))
