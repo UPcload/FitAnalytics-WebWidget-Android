@@ -290,6 +290,7 @@ public class BasicTest {
             .setLanguage("pt")
             .setShopCountry("BR")
             .setUserId("user1234")
+            .setShopSessionId("0a1b2c3d")
             .setThumb("https://widget.fitanalytics.com/images/integration/fit-finder-retina.png")
             .setSizes(sizes)
             .setManufacturedSizes(msizes)
@@ -312,7 +313,12 @@ public class BasicTest {
         .then(new DonePipe() { public Promise pipeDone(Object result) {
             Log.d("fitaWidget", "option userId " + result.toString());
             assertThat(result.toString(), is("\"user1234\""));
-            return widget.testGetWidgetOptionValue("thumb");
+            return widget.testGetWidgetOptionValue("shopSessionId");
+        }})
+        .then(new DonePipe() { public Promise pipeDone(Object result) {
+             Log.d("fitaWidget", "option shopSessionId " + result.toString());
+             assertThat(result.toString(), is("\"0a1b2c3d\""));
+             return widget.testGetWidgetOptionValue("thumb");
         }})
         .then(new DonePipe() { public Promise pipeDone(Object result) {
             Log.d("fitaWidget", "option thumb " + result.toString());

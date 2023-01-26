@@ -18,6 +18,7 @@ public class WidgetOptions {
     public static String UNITS_BRITISH = "2";
 
     private String mUserId = "";
+    private String mShopSessionId = "";
     private String mLanguage = "";
     private String mShopCountry = "";
     private String mThumb = "";
@@ -38,6 +39,16 @@ public class WidgetOptions {
      */
     public WidgetOptions setUserId(String userId) {
         mUserId = userId;
+        return this;
+    }
+
+    /**
+     * Set `shopSessionId` parameter. this is a first-party client generated session (generally a cookie). Session ID is generally used by shopping apps to better track shopping journey (from opening app until reaching "thank you" page)
+     * @param shopSessionId the Session ID value
+     * @return the current instance for chaining
+    */
+    public WidgetOptions setShopSessionId(String shopSessionId) {
+        mShopSessionId = shopSessionId;
         return this;
     }
     
@@ -178,6 +189,7 @@ public class WidgetOptions {
         JSONObject out = new JSONObject();
         try {
             if (mUserId != "") out.put("userId", mUserId);
+            if (mShopSessionId != "") out.put("shopSessionId", mShopSessionId);
             if (mLanguage != "") out.put("language", mLanguage);
             if (mShopCountry != "") out.put("shopCountry", mShopCountry);
             if (mSizes != null) {

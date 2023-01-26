@@ -11,6 +11,13 @@ Set `userId` parameter. When the user is logged in, you can pass down the unique
  * **Parameters:** `userId` — The `userId` value
  * **Returns:** The current instance for chaining
 
+#### `public WidgetOptions setShopSessionId(String shopSessionId)`
+
+Set `shopSessionId` parameter. Set `shopSessionId` parameter. this is a first-party client generated session (generally a cookie). Session ID is generally used by shopping apps to better track shopping journey (from opening app until reaching "thank you" page) and it is used by FitFinder to better track and match purchases against recommendation provided by the sizing tool. 
+
+ * **Parameters:** `shopSessionId` — The `shopSessionId` value
+ * **Returns:** The current instance for chaining
+
 #### `public WidgetOptions setLanguage(String language)`
 
 Set the `language` parameter. This parameter manually forces the widget to be delivered in the specified 2-letter language (ISO 639-1), for example "en" for English, "de" for German, "fr" for French or “pt” for Portuguese.

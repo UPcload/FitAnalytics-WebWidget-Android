@@ -232,6 +232,8 @@ This method will be called when the widget has successfully opened after the `op
 
 `userId` .. the shop's user ID, in case the user is logged in
 
+`shopSessionId` (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
+
 `shopCountry` .. the ISO code of the shop's country (e.g. US, DE, FR, GB, etc.)
 
 `language` .. the language mutation of the shop (e.g. en, de, fr, es, it, etc.)
@@ -252,6 +254,7 @@ For the complete list of available widget options and their description, please 
  * **orderId** .. (required) unique identifier of the order
  * **productSerial** .. (required) serial number/ID of the product (independent of purchased size!) including your shop-prefix. Example: `happyshop-123556` ; it should match with the `productSerial` that was used for PDP size advisor.
  * **userId** .. if the user is registered customer, their shop-specific ID
+ * **shopSessionId** .. (recommended) shop created session for the shopping journey (it should have the same value collected from the PDP for the same shopping session)
  * **shopArticleCode** .. (optional) the size-specific identifier
  * **purchasedSize** .. the size code of the purchased size
  * **shopCountry** .. if the shop has country-specific versions, specify it via this attribute
@@ -292,6 +295,7 @@ import com.fitanalytics.webwidget.FITAPurchaseReporter;
  // add additional attributes, such as shopCountry, lanugage etc. here:
  report.setShopCountry("DE");
  report.setShopLanguage("de");
+ report.setShopSessionId("0a1b2c3d");k
  ```
  
 Send the reports via reporter with **reporter.execute(FITAPurchaseReport... fitaPurchaseReports)**. You can not re-use the reporter. Once you have called **execute(FITAPurchaseReport... fitaPurchaseReports)**. 

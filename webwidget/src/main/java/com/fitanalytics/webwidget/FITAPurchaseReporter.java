@@ -232,6 +232,8 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
             // map shoparticlecode to variantId
             putIfNotNull(KEYS.VARIANT_ID,report.getShopArticleCode(), dict);
             putIfNotNull(KEYS.USER_ID,report.getUserId(), dict);
+            // shopSessionId is sent as "ssid":
+            putIfNotNull(KEYS.SSID,report.getShopSessionId(), dict);
             putIfNotNull(KEYS.SHOP,report.getShop(), dict);
             putIfNotNull(KEYS.PURCHASED_SIZE,report.getPurchasedSize(), dict);
             putIfNotNull(KEYS.CURRENCY,report.getCurrency(), dict);
@@ -427,6 +429,7 @@ public class FITAPurchaseReporter extends AsyncTask<FITAPurchaseReport, Integer,
         public static final String HOSTNAME = "hostname";
         public static final String ORDER_ID = "orderId";
         public static final String USER_ID = "userId";
+        public static final String SSID = "ssid";
         public static final String PURCHASED_SIZE = "purchasedSize";
         public static final String SHOP = "shop";
         public static final String CURRENCY = "currency";

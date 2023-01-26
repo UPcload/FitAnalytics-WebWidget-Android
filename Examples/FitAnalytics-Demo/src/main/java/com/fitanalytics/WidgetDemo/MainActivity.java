@@ -204,6 +204,7 @@ public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHan
         WidgetOptions options = new WidgetOptions()
             .setLanguage("en")
             .setShopCountry("US")
+            .setShopSessionId("0a1b2c3d")
             .setMetric(WidgetOptions.UNITS_BRITISH)
             .setCartEnabled(true);
 

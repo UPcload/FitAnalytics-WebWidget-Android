@@ -10,6 +10,11 @@ public class FITAPurchaseReport {
     private Double price;
     // mandatory field
     private String currency;
+
+    // recommended and helpful field:
+    private String shopSessionId;
+
+    // optional and helpful fields:
     private String userId;
     private String purchasedSize;
     private String shopArticleCode;
@@ -67,6 +72,23 @@ public class FITAPurchaseReport {
         this.productSerial = productSerial;
     }
 
+        /**
+         * A FITAPurchaseReport represents an order about a purchased item identified by the productSerial and the orderId
+         * Use @see FITAPurchaseReporter.sendReport(FITAPurchaseReport report) to report to the Fit Analytics endpoints
+         * @param productSerial
+         * @param orderId
+         * @param price
+         * @param currency
+         * @param shopSessionId
+         */
+    public FITAPurchaseReport(String productSerial, String orderId, String purchasedSize , Double price, String currency, String shopSessionId) {
+        this.currency = currency;
+        this.price = price;
+        this.purchasedSize = purchasedSize;
+        this.orderId = orderId;
+        this.productSerial = productSerial;
+        this.shopSessionId = shopSessionId;
+    }
 
     public String getOrderId() {
         return orderId;
@@ -166,5 +188,13 @@ public class FITAPurchaseReport {
 
     public void setSid(String sid) {
         this.sid = sid;
+    }
+
+    public String getShopSessionId() {
+        return shopSessionId;
+    }
+
+    public void setShopSessionId(String shopSessionId) {
+        this.shopSessionId = shopSessionId;
     }
 }
