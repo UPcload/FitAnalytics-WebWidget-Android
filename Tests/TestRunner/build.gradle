@@ -7,6 +7,7 @@ buildscript {
 apply plugin: 'com.android.application'
 
 android {
+    namespace "com.fitanalytics.TestRunner"
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
