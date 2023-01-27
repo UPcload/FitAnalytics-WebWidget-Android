@@ -21,6 +21,7 @@ import com.fitanalytics.webwidget.FITAWebWidget;
 import com.fitanalytics.webwidget.FITAWebWidgetHandler;
 import com.fitanalytics.webwidget.ManufacturedSize;
 import com.fitanalytics.webwidget.WidgetOptions;
+import com.fitanalytics.WidgetDemo.R;
 
 import org.json.JSONObject;
 
