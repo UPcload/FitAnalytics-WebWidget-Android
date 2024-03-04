@@ -323,14 +323,56 @@ class Size {
  
  The most common attributes are:
  
- * **orderId** .. (required) unique identifier of the order
- * **productSerial** .. (required) serial number/ID of the product (independent of purchased size!) including your shop-prefix. Example: `happyshop-123556` ; it should match with the `productSerial` that was used for PDP size advisor.
- * **userId** .. if the user is registered customer, their shop-specific ID
- * **shopSessionId** .. (recommended) shop created session for the shopping journey (it should have the same value collected from the PDP for the same shopping session)
- * **shopArticleCode** .. (optional) the size-specific identifier
- * **purchasedSize** .. the size code of the purchased size
- * **shopCountry** .. if the shop has country-specific versions, specify it via this attribute
- * **language** .. if your shop has language-specific versions, you can specify the language in which the purchase was made (which helps identify the user's sizing system)
+ ```java
+ public interface FitAnalyticsPurchaseOptions {
+    /**
+     *  (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
+     * (value **MUST** conform with the one passed in the PDP for the same shopping session)
+     */
+    String shopSessionId;
+    /**
+     * The product serial number, which is used to identify the product in the Fit Analytics database.
+     * If `shopPrefix` is not set, we are going to infer the shop prefix based on the product serial number prefix. E.G. `shopprefix-abcd1234`
+     */
+    String productSerial;
+    /**
+     * (optional) the size-specific identifier
+     */
+    String shopArticleCode;
+    /**
+     * Acts as a size code identifier that we can use when gathering data per size
+     */
+    String ean;
+    /**
+     * Shops' internal order identifier.
+     */
+    String orderId;
+    /**
+     * It should match the size that is available in the product's feed.
+     */
+    String purchasedSize;
+    /**
+     * The user identifier based on the shop's user id, for example in case the user is logged in.
+     */
+    String userId;
+    /**
+     * ISO 639-1
+     * E.G. "en"
+     */
+    String language;
+    /**
+     * ISO 3166-1
+     * E.G. "GB"
+     */
+    String shopCountry;
+    double price;
+    int quantity;
+    /**
+     * E.G. "EUR" | "USD" | "GBP"
+     */
+    String currency;
+}
+ ```
 
  
 ### Usage
