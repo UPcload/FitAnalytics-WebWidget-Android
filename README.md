@@ -323,7 +323,7 @@ class Size {
  
  The most common attributes are:
  
- ```java
+```java
  public interface FitAnalyticsPurchaseOptions {
     /**
      *  (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
@@ -372,7 +372,7 @@ class Size {
      */
     String currency;
 }
- ```
+```
 
  
 ### Usage
