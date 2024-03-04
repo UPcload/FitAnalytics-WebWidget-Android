@@ -408,7 +408,7 @@ import com.fitanalytics.webwidget.FITAPurchaseReporter;
  // add additional attributes, such as shopCountry, lanugage etc. here:
  report.setShopCountry("DE");
  report.setShopLanguage("de");
- report.setShopSessionId("0a1b2c3d");k
+ report.setShopSessionId("0a1b2c3d");
  ```
  
 Send the reports via reporter with **reporter.execute(FITAPurchaseReport... fitaPurchaseReports)**. You can not re-use the reporter. Once you have called **execute(FITAPurchaseReport... fitaPurchaseReports)**. 
