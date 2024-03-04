@@ -6,7 +6,6 @@ The WebWidget SDK allows integrating the Fit Analytics Size Advisor widget into 
 
 As a first step, we suggest that you familiarize yourself with the Fit Analytics web-based Size Advisor service by:
 1. Reading through the Fit Analytics website and trying out a sample product - https://www.fitanalytics.com/  
-2. Reading through the Fit Analytics web developers guide - http://developers.fitanalytics.com/documentation  
 
 The integration method currently supported by this SDK is based on loading HTML/JS-based widget code in a separate WebView instance and establishing communication between the host app and the embedded web widget.  
 
@@ -228,17 +227,90 @@ This method will be called when the widget has successfully opened after the `op
 
 ## Configurable widget options
 
-`manufacturedSizes` .. a dictionary of all manfactured sizes for the current product, including their in/out-of-stock status
+```java
+interface FitAnalyticsWidgetOptions {
+    /**
+     *  (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
+     */
+    String shopSessionId;
+    /**
+     * The shop prefix, this is a value that we set internally so we can identify your shop with the product.
+     */
+    String shopPrefix;
+    /**
+     * The product serial number, which is used to identify the product in the Fit Analytics database.
+     * If `shopPrefix` is not set, we are going to infer the shop prefix based on the product serial number prefix. E.G. `shopprefix-abcd1234`
+     */
+    String productSerial;
+    /**
+     * Product thumbnail image URL.
+     */
+    String thumb;
+    /**
+     * All the sizes of your product, each size should be a key in the object, and the value should be a boolean indicating if the size is available or not.
+     * They keys should match with the keys in the products' feed.
+     * E.G. { M: true, L: false } means that the product is available in size M but not in size L.
+     */
+    Map<String, Boolean> manufacturedSizes;
+    /**
+     * In stock sizes for the current product.
+     * E.G. [{ value: "M", isAvailable: true }, { value: "L", isAvailable: false }]
+     */
+    List<Size> sizes;
+    /**
+     * The user identifier based on the shop's user id, for example in case the user is logged in.
+     */
+    String userId;
+    /**
+     * ISO 639-1
+     * E.G. "en"
+     */
+    String language;
+    /**
+     * ISO 3166-1
+     * E.G. "GB"
+     */
+    String shopCountry;
+    /**
+     * Metric system
+     * 0: imperial
+     * 1: metric
+     * 2: british
+     * If it is not set it will be inferred from the shop country.
+     */
+    int metric;
+    void close(String productSerial, String size);
+    void error(String productSerial);
+    void cart(String productSerial, String size);
+    void recommend(String productSerial, String size);
+    void load(String productSerial);
+    String userAge;
+    /**
+     * m: man
+     * w: women
+     */
+    String userGender;
+    /**
+     * Even if the `metric` property is set to a different numerical system, the user's weight and height should be in kilograms and centimeters respectively.
+     */
+    String userWeight;
+    String userHeight;
 
-`userId` .. the shop's user ID, in case the user is logged in
+    /**
+     * Women bra measurements
+     * The values described bellow can be obtained from the user's profile after they have filled in their bra measurements.
+     * It is a large subset of possible bra measurements to be described, usually you feed the widget with the measurements available from the profile
+     */
+    String userBraBust;
+    String userBraCup;
+    String userBraSystem;
+}
 
-`shopSessionId` (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
-
-`shopCountry` .. the ISO code of the shop's country (e.g. US, DE, FR, GB, etc.)
-
-`language` .. the language mutation of the shop (e.g. en, de, fr, es, it, etc.)
-
-For the complete list of available widget options and their description, please see http://developers.fitanalytics.com/documentation#list-callbacks-parameters
+class Size {
+    String value;
+    boolean isAvailable;
+}
+```
 
 ---
  
@@ -251,16 +323,57 @@ For the complete list of available widget options and their description, please 
  
  The most common attributes are:
  
- * **orderId** .. (required) unique identifier of the order
- * **productSerial** .. (required) serial number/ID of the product (independent of purchased size!) including your shop-prefix. Example: `happyshop-123556` ; it should match with the `productSerial` that was used for PDP size advisor.
- * **userId** .. if the user is registered customer, their shop-specific ID
- * **shopSessionId** .. (recommended) shop created session for the shopping journey (it should have the same value collected from the PDP for the same shopping session)
- * **shopArticleCode** .. (optional) the size-specific identifier
- * **purchasedSize** .. the size code of the purchased size
- * **shopCountry** .. if the shop has country-specific versions, specify it via this attribute
- * **language** .. if your shop has language-specific versions, you can specify the language in which the purchase was made (which helps identify the user's sizing system)
- 
-For the complete list of possible reported fields and their description, please see https://developers.fitanalytics.com/documentation#sales-data-exchange
+```java
+ public interface FitAnalyticsPurchaseOptions {
+    /**
+     *  (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
+     * (value **MUST** conform with the one passed in the PDP for the same shopping session)
+     */
+    String shopSessionId;
+    /**
+     * The product serial number, which is used to identify the product in the Fit Analytics database.
+     * If `shopPrefix` is not set, we are going to infer the shop prefix based on the product serial number prefix. E.G. `shopprefix-abcd1234`
+     */
+    String productSerial;
+    /**
+     * (optional) the size-specific identifier
+     */
+    String shopArticleCode;
+    /**
+     * Acts as a size code identifier that we can use when gathering data per size
+     */
+    String ean;
+    /**
+     * Shops' internal order identifier.
+     */
+    String orderId;
+    /**
+     * It should match the size that is available in the product's feed.
+     */
+    String purchasedSize;
+    /**
+     * The user identifier based on the shop's user id, for example in case the user is logged in.
+     */
+    String userId;
+    /**
+     * ISO 639-1
+     * E.G. "en"
+     */
+    String language;
+    /**
+     * ISO 3166-1
+     * E.G. "GB"
+     */
+    String shopCountry;
+    double price;
+    int quantity;
+    /**
+     * E.G. "EUR" | "USD" | "GBP"
+     */
+    String currency;
+}
+```
+
  
 ### Usage
  
@@ -295,7 +408,7 @@ import com.fitanalytics.webwidget.FITAPurchaseReporter;
  // add additional attributes, such as shopCountry, lanugage etc. here:
  report.setShopCountry("DE");
  report.setShopLanguage("de");
- report.setShopSessionId("0a1b2c3d");k
+ report.setShopSessionId("0a1b2c3d");
  ```
  
 Send the reports via reporter with **reporter.execute(FITAPurchaseReport... fitaPurchaseReports)**. You can not re-use the reporter. Once you have called **execute(FITAPurchaseReport... fitaPurchaseReports)**. 
