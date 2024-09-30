@@ -5,7 +5,8 @@
 The WebWidget SDK allows integrating the Fit Analytics Size Advisor widget into your own Android app.
 
 As a first step, we suggest that you familiarize yourself with the Fit Analytics web-based Size Advisor service by:
-1. Reading through the Fit Analytics website and trying out a sample product - https://www.fitanalytics.com/  
+1. Reading through the Fit Analytics website and trying out a sample product - https://www.fitanalytics.com/ 
+2. Reading through the Fit Analytics Native Apps Integration guide - http://developers.fitanalytics.com/native-apps
 
 The integration method currently supported by this SDK is based on loading HTML/JS-based widget code in a separate WebView instance and establishing communication between the host app and the embedded web widget.  
 
@@ -51,7 +52,7 @@ $ gradle appStart
 
 We're presuming a simple app with the single main MainActivity class.
 
-Import the **FitAWebWidget** and the **FITAWebWidgetHandler** packages into your **MainActivity** class
+Import the **FITAWebWidget** and the **FITAWebWidgetHandler** packages into your **MainActivity** class
  
 ```java
 import com.fitanalytics.webwidget.FITAWebWidgetHandler;
@@ -62,8 +63,8 @@ The MainActivity class implements the **FITAWebWidgetHandler** interface, so tha
 
 ```java
 public class MainActivity  extends AppCompatActivity implements FITAWebWidgetHandler {
-  ...
-    }
+  // ...
+}
 ```
 
 Add a property for storing the reference to the widget.
@@ -113,12 +114,31 @@ Create a widget instance inside the container page (optionally) initialize it wi
 This method should be called only after the **onWebWidgetReady** callback has been called (or inside the callback) and will trigger the **onWebWidgetInit** callback. If the `productSerial` has been specified, the **onWebWidgetProductLoad** will be also called, once the product info has been loaded. 
 
 ```java
-// options: { "sizes": [ "S", "XL" ] }
+// options: { "manufacturedSizes": { "S": true, "XL": false }, ... }
+
+List<ManufacturedSize> sizes = new ArrayList<ManufacturedSize>();
+sizes.add(new ManufacturedSize("S", true));
+sizes.add(new ManufacturedSize("XL", false));
+
+WidgetOptions options = new WidgetOptions()
+    .setShopPrefix("example")
+    .setLanguage("en")
+    .setShopCountry("GB")
+    .setCartEnabled(true)
+    .setManufacturedSizes(sizes);
+
+widget.create("example-123456", options);
+
+// or alternatively
 
 widget.create("example-123456", (new JSONObject())
-  .put("sizes", (new JSONArray())
-    .put(0, "S")
-    .put("1", "XL")
+  .put("shopPrefix", "example")
+  .put("shopLanguage", "en")
+  .put("shopCountry", "GB")
+  .put("cart", true)
+  .put("manufacturedSizes", (new JSONObject())
+    .put("S", true)
+    .put("XL", false)
   )
 );
 ```
@@ -130,10 +150,10 @@ widget.create("example-123456", (new JSONObject())
 Show the actual widget. Optionally configure the widget with new `productSerial` and/or `options`. It may trigger loading additional resources over network, and will show the widget only after all assets have been loaded. When the opening is finished, the **onWebWidgetOpen** callback will be called on the callback handler.
 
 ```java
-widget.open("example-123456", (new JSONObject())
-  .put("sizes", (new JSONArray())
-    .put(0, "S")
-    .put("1", "XL")
+widget.open("example-123457", (new JSONObject())
+  .put("manufacturedSizes", (new JSONObject())
+    .put("S", true)
+    .put("M", true)
   )
 );
 ```
@@ -170,9 +190,9 @@ widget.reconfigure("example-123456", null);
 // OR
 
 widget.reconfigure(null, (new JSONObject())
-  .put("sizes", (new JSONArray())
-    .put(0, "S")
-    .put("1", "XL")
+  .put("manufacturedSizes", (new JSONObject())
+    .put("S", true)
+    .put("M", false)
   )
 );
 ```
@@ -225,16 +245,54 @@ public void onWebWidgetOpen(FITAWebWidget widget, String productId);
 
 This method will be called when the widget has successfully opened after the `open` method call.
 
+&nbsp;
+
+```java
+public void onWebWidgetClose(FITAWebWidget widget, String productId, String size, JSONObject details);
+```
+
+This method will be called when user of the widget has specifically requested closing of the widget by clicking on the close button.
+
+ * `widget` .. The widget controller instance
+ * `productId` .. The ID of the product
+ * `size` .. The last recommended size of the product, if there was a recommendation. `null` if there wasn't any recommendation.
+ * `details` .. The details object.
+
+&nbsp;
+
+```java
+public void onWebWidgetAddToCart(FITAWebWidget widget, String productId, String size, JSONObject details);
+```
+
+This method will be called when user of the widget has specifically clicked on the add-to-cart inside the widget.
+
+* `widget` .. The widget controller instance
+* `productId` .. The ID of the product
+* `size` .. The size of the product that should be added to cart.
+* `details` .. The details object.
+
+&nbsp;
+
+```java
+public void onWebWidgetRecommend(FITAWebWidget widget, String productId, String size, JSONObject details);
+```
+
+This method will be called after the `getRecommendation` call on the FITAWebWidget controller, when the widget has received and processed the size recommendation.
+  
+* `productId` .. The ID of the product
+* `size` .. The recommended size of the product.
+* `details` .. The recommendation details object.
+
+
+
 ## Configurable widget options
+
+The widget can be configured by plain `JSONObject` which can contain properties as documented below.
 
 ```java
 interface FitAnalyticsWidgetOptions {
     /**
-     *  (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
-     */
-    String shopSessionId;
-    /**
-     * The shop prefix, this is a value that we set internally so we can identify your shop with the product.
+     * (required) The shop prefix, this is a value that we set internally so we can identify your shop with the product.
      */
     String shopPrefix;
     /**
@@ -253,21 +311,30 @@ interface FitAnalyticsWidgetOptions {
      */
     Map<String, Boolean> manufacturedSizes;
     /**
-     * In stock sizes for the current product.
-     * E.G. [{ value: "M", isAvailable: true }, { value: "L", isAvailable: false }]
+     * (deprecated) In stock sizes for the current product.
+     * E.G. ["S", "M", "XXL"]
      */
-    List<Size> sizes;
+    List<String> sizes;
+    /**
+     *  A first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
+     */
+    String shopSessionId;
     /**
      * The user identifier based on the shop's user id, for example in case the user is logged in.
      */
     String userId;
     /**
-     * ISO 639-1
+     * The ISO-code of shop's current language
      * E.G. "en"
      */
     String language;
     /**
-     * ISO 3166-1
+     * (require) The ISO-code of shop's default language
+     * E.G. "en"
+     */
+    String shopLanguage;
+    /**
+     * (required) the ISO country code of the current shop
      * E.G. "GB"
      */
     String shopCountry;
@@ -279,11 +346,15 @@ interface FitAnalyticsWidgetOptions {
      * If it is not set it will be inferred from the shop country.
      */
     int metric;
-    void close(String productSerial, String size);
-    void error(String productSerial);
-    void cart(String productSerial, String size);
-    void recommend(String productSerial, String size);
-    void load(String productSerial);
+
+    /**
+     * Enable the add-to-cart integration; specifically, if this is enabled and the recommended size is available, the widget will display the Add-to-cart button on the results screen. When the user clicks the button, the SDK will call the provided `` callback. 
+     */
+    boolean cart;
+
+    /**
+     * User's current age in years
+     */
     String userAge;
     /**
      * m: man
@@ -306,11 +377,9 @@ interface FitAnalyticsWidgetOptions {
     String userBraSystem;
 }
 
-class Size {
-    String value;
-    boolean isAvailable;
-}
 ```
+
+Alternatively you use `WidgetOptions` wrapper, which encapsulates all supported options and exposes a set of methods for manipulating them. You can check all the methods and their description [here](docs/WidgetOptions.md).
 
 ---
  
@@ -327,7 +396,11 @@ class Size {
 ```java
  public interface FitAnalyticsPurchaseOptions {
     /**
-     *  (Shop Session ID) .. a first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
+     * (requires) The shop prefix, this is a value that we set internally so we can identify your shop with the product.
+     */
+    String shop;
+    /**
+     * A first-party client generated session ID (can be a cookie): we use it to track purchases and keep our data more consistent (we **do NOT** use it to track or identify users)
      * (value **MUST** conform with the one passed in the PDP for the same shopping session)
      */
     String shopSessionId;
@@ -421,6 +494,7 @@ Consult the [AsyncTask Documenation](https://developer.android.com/reference/and
 ## Common pitfalls
 
 ### Opening Fit Finder in background
+
 In some implementations, Fit Finder is opened in the background for every PDP in hidden mode. In those implementations, clicking the size help link unhides Fit Finder.
 Such an implementation should be avoided as it is inefficient for several reasons:
 1. It runs unnecessary Javascript code in the background for users who are not interested in size help, which means extra app resources are consumed for no reason.
